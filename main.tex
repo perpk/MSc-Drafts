@@ -22,15 +22,40 @@
 \usepackage{tablefootnote}
 \usepackage[greek, english]{babel}
 \usepackage{csquotes}
-\addbibresource{refs.bib}
+\usepackage{fancyhdr}
+\addbibresource{references.bib}
 \captionsetup{figurename=Εικόνα}
 \captionsetup{tablename=Πίνακας}
 \renewcommand\theadfont{\bfseries}
 \renewcommand{\arraystretch}{1.5}
 
+\newlength{\logoheight}
+\setlength{\logoheight}{1.2cm}
+\newlength{\headertextwidth}
+\setlength{\headertextwidth}{\dimexpr\textwidth-2\logoheight-2em\relax}
+
+\pagestyle{fancy}
+    \fancyhf{}
+    \fancyhead[L]{\raisebox{-\height}{\includegraphics[height=\logoheight]{university1-logo}}}
+    \fancyhead[C]{\parbox{\headertextwidth}{\centering\footnotesize John Doe \\ Thesis Title in Greek}}
+    \fancyhead[R]{\raisebox{-\height}{\includegraphics[height=\logoheight]{university2-logo}}}
+    \fancyfoot[C]{\thepage}
+    \renewcommand{\headrulewidth}{0.4pt}
+    \setlength{\headsep}{15pt}
+
 \begin{document}
 \selectlanguage{greek}
     \begin{titlepage}
+        \begin{center}
+            \Large{Διαπανεπιστημιακό Μεταπτυχιακό Πρόγραμμα Σπουδών}
+        \end{center}
+        \begin{center}
+            \Large{Βιοπληροφορική και Νευροπληροφορική}
+        \end{center}
+        \vspace{16mm}
+        \begin{center}
+            \Large{Μεταπτυχιακή Διπλωματική Εργασία}
+        \end{center}
         \begin{center}
             \Large{Ανάλυση δεδομένων γονιδιακής έκφρασης και χαρτογράφηση λειτουργικών δικτύων στη νόσο του Πάρκινσον}
         \end{center}
@@ -40,9 +65,54 @@
         \end{center}
         \vspace{16mm}
         \begin{center}
-            Επιτροπή Επίβλεψης Διπλωματικής Εργασίας
-            TODO
+            Επιβλέπων καθηγητής: Μάριος Κροκίδης
+        \end{center}
+        \vspace{50mm}
+        \begin{center}
+            Κιλκίς, Ιούλιος 2025
         \end{center}
     \end{titlepage}
-    \section{Περίληψη}
+    \section*{Περίληψη}
+        \begin{spacing}{1.5}
+            \par
+                H εργασία αυτή διαπραγματεύεται την ανάλυση μεταγραφικών δεδομένων αλληλούχισης RNA από δείγματα ολικού αίματος, καθώς και την χαρτογράφηση πιθανών λειτουργικών δικτύων στη νόσο του Πάρκινσον. Σκοπό αποτελεί η εφαρμογή κατάλληλων βιοπληροφοριακών εργαλείων προκειμένου να εντοπιστούν διαφορές στη γονιδιακή έκφραση μεταξύ συγκεκριμένων δεδομένων της νόσου και παράλληλα να αναζητηθούν γονίδια-στόχοι που εμπλέκονται στην παθοφυσιολογία.
+            \par
+                Η νόσος του Πάρκινσον χαρακτηρίζεται από έντονη κινητική δυσχέρεια με χαρακτηριστικό τρόμο στα άκρα και οφείλεται στην απώλεια ντοπαμινεργικών νευρώνων στην μέλαινα ουσία του εγκεφάλου. Η απώλεια λειτουργικών νευρώνων οδηγεί στην μείωση έκλυσης του νευροδιαβιβαστή της Ντοπαμίνης και οφείλεται στην συσσώρευση της πρωτεΐνης α-Συνουκλεϊνης και τη διαμόρφοση των λεγόμενων σωμάτιων Lewy εντός του κυττοπλάσματος των ντοπαμινεργικών νευρώνων (\emph{\cite{Balestrino2020ParkinsonDisease}}).
+            \par
+                Τα δείγματα προέρχονται από μια εκτεταμένη μελέτη, την Parkinson Progression Markers Initiative \emph{(PPMI\footnote{https://www.ppmi-info.org/})} τα οποία διανέμονται διαδικτυακά κατόπιν εγγραφής στις σελίδας του Imaging and Data Archive \emph{(IDA\footnote{https://ida.loni.usc.edu/})}. Πρόκειται για μια πολυδιάστατη μελέτη, καθώς πέραν των δεδομένων αλληλούχισης μεταγραφώματος διανέμονται μεταξύ άλλων και δεδομένα πρωτεομικής, μεθυλίωσης, κλινικών μελετών και απεικονιστικών εξετάσεων από ομάδες νοσούντων, ελέγχου αλλά και ατόμων με πιθανή γενετική προδιάθεση, ως φορείς γενετικών μεταλλάξεων σε γνωστά γονίδια τα οποία εμπλέκονται στην παθοφυσιολογία της νόσου.
+            \par
+                Καθώς τα διαγνωστικά πρωτόκολλα στηρίζονται κατά βάση σε κλινική αξιολόγηση των κινητικών συμπτωμάτων από ειδικούς νευρολόγους. Έχουν καθιερωθεί πρωτόκολλα αξιολόγησης κλινικών συμπτωμάτων, τα οποία στηρίζουν τη διαφορική διάγνωση (\emph{\cite{Koller2018TableGuidelines}}), τα συμπτώματα που παρουσιάζουν κινητική παθολογία είναι πιθανόν να αλληλεπικαλύπτονται με άλλες παθήσεις του νευρικού συστήματος (\emph{\cite{Tolosa2021ChallengesDisease}}). 
+            \newpage
+            \par
+                Μια έγκαιρη διάγνωση η οποία στηρίζεται σε βιοδείκτες, όπως ενδείξεις εγκεφαλογραφημάτων, απεικονιστικών εξετάσεων όπως αυτής της μαγνητικής τομογραφίας εγκεφάλου αλλά και βιολογικού υλικού όπως εγκεφαλονωτιαίου υγρού αλλά και προϊόντα αίματος δεν έχουν καθιερωθεί καθώς ποικίλες έρευνες διαπραγματεύονται την ανεύρεση βιοδεικτών από διάφορες πηγές του οργανισμού (\emph{\cite{Miller2015BiomarkersFuture}}) (\emph{\cite{Maitin2022SurveyReview}}).
+            \par
+                Στην παρούσα εργασία χρησιμοποιούνται δείγματα ολικού αίματος ως μια προσιτή και πλούσια πηγή βιολογικής πληροφορίας. Ταυτόχρονα η αφθονία μεταγραφικής πληροφορίας που εμπεριέχεται στο αίμα, καθιστά μια εξαιρετική πρόκληση στην εύρεση και διαφοροποίηση σημαντικής πληροφορίας ως προς την αναγνώριση πιθανών βιοδεικτών και λειτουργικών δικτύων που θα μπορούσαν να επιτρέψουν τον συσχετισμό με τη νόσο του Πάρκινσον.
+            \par
+                Τα εργαλεία της βιοπληροφορικής που χρησιμοποιήθηκαν σε αυτή τη διπλωματική εργασία είναι μέθοδοι στατιστικής ανάλυσης, όπως η διαφορική ανάλυση γονιδιακής έκφρασης, η ανάλυση εμπλουτισμού και η μηχανική μάθηση, για την ανεύρεση χαρακτηριστικών που καθιστούν πιθανή την αναγνώριση της νόσου αλλά και την διασταύρωση των αποτελεσμάτων με πληροφορίες από βάσεις δεδομένων σχολιασμού.
+        \end{spacing}
+        \newpage
+        \section*{Abstract}
+            \selectlanguage{english}
+            \begin{spacing}{1.5}
+                \par
+                    This thesis handles the analysis of trancriptome data from RNA sequencing on whole-blood samples and the mapping of functional gene networks in Parkinson's disease. It aims at the application of suitable bioinformatics toolsets in order to recognise differences in gene expressions between particular data of the disease and in parallel to search for target genes with possible involvement in the pathophysiology.
+                \par
+                    Parkinson's disease on the surface is defined by intense movement distress with a characteristic tremor on the limbs which is assumed to be due to the loss of dopaminergic neurons in the substantia nigra of the brain. The loss of functional neurons leads to progressive reduction of the neurotransmitter Dopamine and effectively happens because of accumulation of α-Synuclein to Lewy bodies in the inside of the dopaminergic cells (\emph{\cite{Balestrino2020ParkinsonDisease}}).
+                \par
+                    The samples used in the this thesis originate from a large-scale study, the Parkinson Progression Markers Initiative (\emph{PPMI}) which are made available to download on the internet after registration on the pages of the Imaging and Data Archive (\emph{IDA}). It is indeed a multi-dimensional study since there are results from several examinations available apart from genetic data, such as Proteomics results, Methylation profiles, Clinical studies and Imaging results from case and control cohorts and dditionally from individuals with a possible genetic predisposition as carriers of genetic mutations in genes that are known to be involved in the pathophysiology of the disease.
+                \par
+                    Since the diagnostic protocols are based on clinical assessment of the symptoms from neurologists and standards that guide the diagnosis (\emph{\cite{Koller2018TableGuidelines}}), symptoms still may overlap with other disease of the nervous system that also have a severe impact on the locomotor system (\emph{\cite{Tolosa2021ChallengesDisease}}).
+                \par
+                    An early diagnosis that relies on biomarkers like indications from EEG's or MRI's and also biological samples like cerebrospinal fluid and ideally non-invasive samples like blood products, haven't been established by now and several research attempts focus on biomarker discovery from different sources of the organism (\emph{\cite{Miller2015BiomarkersFuture}}) (\emph{\cite{Maitin2022SurveyReview}}).
+                \newpage
+                \par
+                    The present thesis uses whole-blood samples as a non-invasive and affordable source of information. At the same time, the abundance of transcriptomic information included in the blood bears an extraordinary challenge for the search and recognition of potential biomarkers and functional networks that could allow a correlation with Parkinson's disease.
+                \par
+                    The bioinformatics toolset as employed in this thesis contains methods from the field of biostatistical analysis, like differential gene expression analysis or gene-set enrichment analysis and machine learning for finding potential features that could aid as diagnostical support and to validate the information against enrichment and annotation resources.
+            \end{spacing}
+        \newpage
+        \begin{spacing}{1.5}
+            \selectlanguage{english}
+            \printbibliography[title={Βιβλιογραφικές αναφορές}]
+        \end{spacing}
 \end{document}
