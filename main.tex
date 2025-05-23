@@ -1,15 +1,24 @@
-\documentclass[12pt]{article}
-\usepackage{graphicx} % Required for inserting images
+\documentclass[12pt]{report}
+\usepackage[greek]{babel}
+\usepackage{fontspec}
+\usepackage{graphicx}
 %!TEX TS-program = xelatex
 %!TEX encoding = UTF-8 Unicode
 \usepackage{xltxtra}
 \usepackage{titlesec}
 \setmainfont{Times New Roman}
-\usepackage{graphicx}
 \usepackage{subcaption}
 \usepackage[export]{adjustbox}
 \usepackage{wrapfig}
-\usepackage[a4paper, bottom=1.2in, top=1in]{geometry}
+\usepackage[a4paper, 
+    top=3cm, 
+    bottom=2.54cm, 
+    left=2.54cm, 
+    right=2.54cm,
+    headheight=28pt,  % Critical for header space
+    headsep=1.2cm,
+    includehead,      % Include header in page area
+    includefoot]{geometry}
 \usepackage{hyperref}
 \usepackage{makecell}
 \usepackage{float}
@@ -20,99 +29,382 @@
 \usepackage[backend=biber, style=apa, sorting=ynt]{biblatex}
 \usepackage{setspace}
 \usepackage{tablefootnote}
-\usepackage[greek, english]{babel}
 \usepackage{csquotes}
 \usepackage{fancyhdr}
+\usepackage{etoolbox}
+\usepackage{tocloft}
 \addbibresource{references.bib}
+\usepackage{nomencl}
 \captionsetup{figurename=Εικόνα}
 \captionsetup{tablename=Πίνακας}
 \renewcommand\theadfont{\bfseries}
 \renewcommand{\arraystretch}{1.5}
 
-\newlength{\logoheight}
-\setlength{\logoheight}{1.2cm}
-\newlength{\headertextwidth}
-\setlength{\headertextwidth}{\dimexpr\textwidth-2\logoheight-2em\relax}
+% \pagestyle{fancy}
+% \fancyhf{} % Clear all headers/footers
 
-\pagestyle{fancy}
+\fancypagestyle{mainstyle}{
     \fancyhf{}
-    \fancyhead[L]{\raisebox{-\height}{\includegraphics[height=\logoheight]{university1-logo}}}
-    \fancyhead[C]{\parbox{\headertextwidth}{\centering\footnotesize John Doe \\ Thesis Title in Greek}}
-    \fancyhead[R]{\raisebox{-\height}{\includegraphics[height=\logoheight]{university2-logo}}}
+    \fancyhead[L]{\hspace{2em}\includegraphics[height=1.21cm,width=3.24cm]{university1-logo.png}}
+    \fancyhead[C]{\raisebox{1ex}{%
+        \parbox{\dimexpr\textwidth-7.5cm-4em\relax}{%
+            \itshape\footnotesize%
+            Κωνσταντίνος Περπερίδης\\%
+            Ανάλυση δεδομένων γονιδιακής έκφρασης\\%
+            και χαρτογράφηση λειτουργικών δικτύων\\%
+            στη νόσο του Πάρκινσον%
+        }}}
+    \fancyhead[R]{\includegraphics[height=1.21cm,width=4cm]{university2-logo.png}\hspace{2em}}
     \fancyfoot[C]{\thepage}
-    \renewcommand{\headrulewidth}{0.4pt}
-    \setlength{\headsep}{15pt}
+    \renewcommand{\headrulewidth}{0pt}
+    % Remove the headsep from here since we set it in geometry
+}
 
-\begin{document}
-\selectlanguage{greek}
+
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \fancyfoot[C]{\thepage}
+    \renewcommand{\headrulewidth}{0pt}
+}
+
+\makeatletter
+\let\oldchapter\chapter
+\renewcommand{\chapter}{\@ifstar{\starchapter}{\nostarchapter}}
+\newcommand{\starchapter}[1]{\oldchapter*{#1}\thispagestyle{mainstyle}}
+\newcommand{\nostarchapter}[1]{\oldchapter{#1}\thispagestyle{mainstyle}}
+\makeatother
+
+
+% Add to your preamble:
+\makenomenclature
+\renewcommand{\nomname}{Συντομογραφίες και Ακρωνύμια} % Custom title
+\renewcommand{\nomlabelwidth}{2.5cm} % Adjust as needed
+
+% Formatting to match your document
+\renewcommand{\nompreamble}{\vspace{6pt}} % Space before list
+\setlength{\nomitemsep}{6pt} 
+
+% Reduce spacing in TOC
+\setlength{\cftbeforechapskip}{6pt} % Space before chapter entries (was ~10pt)
+\setlength{\cftbeforesecskip}{3pt} % Space before section entries
+\setlength{\cftbeforesubsecskip}{3pt} % Space before subsection entries
+
+% Add dot leaders for chapters (normally missing in report class)
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}} % Dot leaders for chapters
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}} % Ensures section leaders
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}} % Subsection leaders
+
+% Font settings for TOC entries
+\renewcommand{\cftchapfont}{\normalfont} % Chapter font
+\renewcommand{\cftchappagefont}{\normalfont} % Chapter page number font
+
+\onehalfspacing % 1.5 line spacing
+
+% Header settings
+\newlength{\logoheight}
+\setlength{\logoheight}{1.21cm}
+\newlength{\logowidth}
+\setlength{\logowidth}{3.24cm}
+\newlength{\headertextwidth}
+\setlength{\headertextwidth}{\dimexpr\textwidth-2\logowidth-2em\relax}
+
+\newcommand{\frontmatter}{
+    \cleardoublepage
+    \pagenumbering{roman}
+    \pagestyle{plain} % Simple page numbers only
+    \setcounter{page}{1} % Explicit reset
+}
+
+% Chapter formatting
+\titleformat{\chapter}[display]
+    {\fontsize{16pt}{18pt}\selectfont\bfseries\raggedright}
+    {\thechapter}
+    {0pt}
+    {}
+\titlespacing*{\chapter}{0pt}{0pt}{18pt}
+
+% Section formatting
+\titleformat{\section}
+    {\fontsize{14pt}{12pt}\selectfont\bfseries\raggedright}
+    {\thesection}
+    {1em}
+    {}
+\titlespacing*{\section}{0pt}{0pt}{12pt}
+
+% Subsection formatting
+\titleformat{\subsection}
+    {\fontsize{12pt}{6pt}\selectfont\bfseries\raggedright}
+    {\thesubsection}
+    {1em}
+    {}
+\titlespacing*{\subsection}{0pt}{0pt}{6pt}
+
+% Subsubsection formatting
+\titleformat{\subsubsection}
+    {\fontsize{12pt}{6pt}\selectfont\bfseries\itshape\raggedright}
+    {}
+    {0pt}
+    {}
+\titlespacing*{\subsubsection}{0pt}{0pt}{6pt}
+
+% Paragraph settings
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+% Caption settings
+\captionsetup{
+    font=footnotesize,
+    labelfont=bf,
+    justification=centering,
+    singlelinecheck=off,
+    skip=6pt,
+    belowskip=12pt
+}
+\DeclareCaptionLabelFormat{chapter}{\thechapter.#1}
+\captionsetup[figure]{labelformat=chapter}
+\captionsetup[table]{labelformat=chapter}
+
+% Prevent figure/table captions from breaking across pages
+% \pretocmd{\figure}{\begin{minipage}{\linewidth}}{}{}
+% \apptocmd{\endfigure}{\end{minipage}}{}{}
+% \pretocmd{\table}{\begin{minipage}{\linewidth}}{}{}
+% \apptocmd{\endtable}{\end{minipage}}{}{}
+
+% Footnote settings
+\renewcommand{\footnotesize}{\fontsize{10pt}{1}\selectfont}
+\let\oldfootnote\footnote
+\renewcommand{\footnote}[1]{\oldfootnote{\onehalfspacing #1}}
+
+
+% \title{\fontsize{16pt}{18pt}\selectfont\bfseries Ανάλυση δεδομένων γονιδιακής έκφρασης και χαρτογράφηση λειτουργικών δικτύων στη νόσο του Πάρκινσον}
+% \author{Κωνσταντίνος Περπερίδης}
+% \date{\today}
+% \maketitle
+
+\makeatletter
+\renewcommand{\@makechapterhead}[1]{%
+  \vspace*{0pt}%
+  {\parindent \z@ \raggedright \normalfont
+    \fontsize{16pt}{18pt}\selectfont\bfseries
+    \mbox{\thechapter.\ #1}\par
+    \nobreak
+    \vskip 18pt
+  }}
+\makeatother
+
+\makeatletter
+\newcommand{\addtotoc}[1]{
+    \cleardoublepage
+    \phantomsection
+    \addcontentsline{toc}{chapter}{#1}
+}
+\renewcommand{\maketitle}{
     \begin{titlepage}
+        % \null\vfill
+        \noindent
+        \begin{minipage}[t]{0.6\textwidth}
+            \centering
+            \includegraphics[height=2.4cm,width=6cm]{university1-logo.png}\\
+            \fontsize{12pt}{14pt}\selectfont
+            Σχολή Θετικών Επιστημών και Τεχνολογίας
+        \end{minipage}
+        \hfill
+        \begin{minipage}[t]{0.4\textwidth}
+            \centering
+            \includegraphics[height=1.8cm,width=6.5cm]{university2-logo.png}\\
+            \fontsize{12pt}{14pt}\selectfont
+            Τμήμα Πληροφορικής
+        \end{minipage}
+        \vspace*{2cm}
         \begin{center}
-            \Large{Διαπανεπιστημιακό Μεταπτυχιακό Πρόγραμμα Σπουδών}
+            \fontsize{16pt}{14pt}\selectfont
+            Διαπανεπιστημιακό Μεταπτυχιακό Πρόγραμμα Σπουδών\\[14pt]
+            Βιοπληροφορική και Νευροπληροφορική\\[48pt]
+            Μεταπτυχιακή Διπλωματική Εργασία\\[24pt]
+    
+            {\fontsize{16pt}{18pt}\selectfont\bfseries \@title\\[18pt]}
+            {\large \@author\\[12pt]}\\[24pt]
+            \fontsize{12pt}{14pt}\selectfont
+            Επιβλέπων καθηγητής: Μάριος Κροκίδης\\
+            \vspace{5cm}
+            \fontsize{14pt}{16pt}\selectfont
+            Κιλκίς, {\large \@date}
         \end{center}
-        \begin{center}
-            \Large{Βιοπληροφορική και Νευροπληροφορική}
-        \end{center}
-        \vspace{16mm}
-        \begin{center}
-            \Large{Μεταπτυχιακή Διπλωματική Εργασία}
-        \end{center}
-        \begin{center}
-            \Large{Ανάλυση δεδομένων γονιδιακής έκφρασης και χαρτογράφηση λειτουργικών δικτύων στη νόσο του Πάρκινσον}
-        \end{center}
-        \vspace{16mm}
-        \begin{center}
-            Κωνσταντίνος Περπερίδης
-        \end{center}
-        \vspace{16mm}
-        \begin{center}
-            Επιβλέπων καθηγητής: Μάριος Κροκίδης
-        \end{center}
-        \vspace{50mm}
-        \begin{center}
-            Κιλκίς, Ιούλιος 2025
-        \end{center}
+        % \vfill\null
     \end{titlepage}
-    \section*{Περίληψη}
-        \begin{spacing}{1.5}
+}
+\makeatother
+
+% Document body
+\begin{document}
+\frontmatter
+
+\title{Ανάλυση δεδομένων γονιδιακής έκφρασης και χαρτογράφηση λειτουργικών δικτύων στη νόσο του Πάρκινσον}
+\author{Κωνσταντίνος Περπερίδης}
+\date{\today}
+\maketitle
+\thispagestyle{empty} 
+\cleardoublepage
+\thispagestyle{empty} 
+\vspace*{\fill} % Push content to vertical center
+\begin{center}
+\fontsize{10pt}{12pt}\selectfont
+\textcopyright
+Η παρούσα εργασία αποτελεί πνευματική ιδιοκτησία του/της φοιτητή/φοιτήτριας («συγγραφέας/δημιουργός»)
+που την εκπόνησε. Στο πλαίσιο της πολιτικής ανοικτής πρόσβασης ο συγγραφέας/δημιουργός εκχωρεί στο
+ΕΑΠ, μη αποκλειστική άδεια χρήσης του δικαιώματος αναπαραγωγής, προσαρμογής, δημόσιου δανεισμού,
+παρουσίασης στο κοινό και ψηφιακής διάχυσής τους διεθνώς, σε ηλεκτρονική μορφή και σε οποιοδήποτε
+μέσο, για διδακτικούς και ερευνητικούς σκοπούς, άνευ ανταλλάγματος και για όλο το χρόνο διάρκειας των
+δικαιωμάτων πνευματικής ιδιοκτησίας. Η ανοικτή πρόσβαση στο πλήρες κείμενο για μελέτη και ανάγνωση
+δεν σημαίνει καθ’ οιονδήποτε τρόπο παραχώρηση δικαιωμάτων διανοητικής ιδιοκτησίας του
+συγγραφέα/δημιουργού ούτε επιτρέπει την αναπαραγωγή, αναδημοσίευση, αντιγραφή, αποθήκευση, πώληση,
+εμπορική χρήση, μετάδοση, διανομή, έκδοση, εκτέλεση, «μεταφόρτωση» (downloading), «ανάρτηση»
+(uploading), μετάφραση, τροποποίηση με οποιονδήποτε τρόπο, τμηματικά ή περιληπτικά της εργασίας, χωρίς
+τη ρητή προηγούμενη έγγραφη συναίνεση του συγγραφέα/δημιουργού. Ο συγγραφέας/δημιουργός διατηρεί
+το σύνολο των ηθικών και περιουσιακών του δικαιωμάτων.
+\end{center}
+\vspace*{\fill} % Ensure it stays at bottom
+\clearpage
+
+
+\clearpage
+\thispagestyle{empty} % No header/footer
+\begin{center}
+    
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[height=2.4cm,width=6cm]{university1-logo.png}\\
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[height=1.8cm,width=6.5cm]{university2-logo.png}\\
+    \end{minipage}
+    \vspace*{2cm}
+    
+    \fontsize{18pt}{22pt}\selectfont\
+        Ανάλυση δεδομένων γονιδιακής έκφρασης και χαρτογράφηση λειτουργικών δικτύων στη νόσο του Πάρκινσον\\
+    \vspace*{2.5cm}
+    \large Κωνσταντίνος Περπερίδης\\
+    \vspace*{2.5cm}
+    \begin{center}
+    \fontsize{12pt}{14pt}\selectfont
+    Επιτροπή Επίβλεψης Διπλωματικής Εργασίας\\[16pt]
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \fontsize{12pt}{14pt}\selectfont
+        \textbf{Επιβλέπων Καθηγητή}\\
+        Μάριος Κροκίδης\\
+        Επίκουρος Καθηγητής - Ιόνιο Πανεπιστήμιο
+    \end{minipage}
+    \hfill % Maximizes horizontal space between minipages
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        \fontsize{12pt}{14pt}\selectfont
+        \textbf{Συν-Επιβλέπων Καθηγητής}\\
+        Θεμιστοκλής Έξαρχος\\
+        Αναπληρωτής Καθηγητής - Ιόνιο Πανεπιστήμιο
+    \end{minipage}
+    \end{center}
+    \vspace*{2.5cm}
+    \fontsize{14pt}{16pt}\selectfont
+    Κιλκίς, {\large \today}
+    
+    \vfill
+\end{center}
+\clearpage
+
+\cleardoublepage
+\pagestyle{mainstyle}
+
+\chapter*{Περίληψη}
+\addcontentsline{toc}{chapter}{Περίληψη}
+    \par
+        H εργασία αυτή διαπραγματεύεται την ανάλυση μεταγραφικών δεδομένων αλληλούχισης RNA από δείγματα ολικού αίματος, καθώς και την χαρτογράφηση πιθανών λειτουργικών δικτύων στη νόσο του Πάρκινσον. Σκοπό αποτελεί η εφαρμογή κατάλληλων βιοπληροφοριακών εργαλείων προκειμένου να εντοπιστούν διαφορές στη γονιδιακή έκφραση μεταξύ συγκεκριμένων δεδομένων της νόσου και παράλληλα να αναζητηθούν γονίδια-στόχοι που εμπλέκονται στην παθοφυσιολογία.
+    \par
+        Η νόσος του Πάρκινσον χαρακτηρίζεται από έντονη κινητική δυσχέρεια με χαρακτηριστικό τρόμο στα άκρα και οφείλεται στην απώλεια ντοπαμινεργικών νευρώνων στην μέλαινα ουσία του εγκεφάλου. Η απώλεια λειτουργικών νευρώνων οδηγεί στην μείωση έκλυσης του νευροδιαβιβαστή της Ντοπαμίνης και οφείλεται στην συσσώρευση της πρωτεΐνης α-Συνουκλεϊνης και τη διαμόρφοση των λεγόμενων σωμάτιων Lewy εντός του κυττοπλάσματος των ντοπαμινεργικών νευρώνων (\emph{\cite{Balestrino2020ParkinsonDisease}}).
+    \par
+        Τα δείγματα προέρχονται από μια εκτεταμένη μελέτη, την Parkinson Progression Markers Initiative \emph{(PPMI\footnote{https://www.ppmi-info.org/})} τα οποία διανέμονται διαδικτυακά κατόπιν εγγραφής στις σελίδας του Imaging and Data Archive \emph{(IDA\footnote{https://ida.loni.usc.edu/})}. Πρόκειται για μια πολυδιάστατη μελέτη, καθώς πέραν των δεδομένων αλληλούχισης μεταγραφώματος διανέμονται μεταξύ άλλων και δεδομένα πρωτεομικής, μεθυλίωσης, κλινικών μελετών και απεικονιστικών εξετάσεων από ομάδες νοσούντων, ελέγχου αλλά και ατόμων με πιθανή γενετική προδιάθεση, ως φορείς γενετικών μεταλλάξεων σε γνωστά γονίδια τα οποία εμπλέκονται στην παθοφυσιολογία της νόσου.
+    \par
+        Καθώς τα διαγνωστικά πρωτόκολλα στηρίζονται κατά βάση σε κλινική αξιολόγηση των κινητικών συμπτωμάτων από ειδικούς νευρολόγους. Έχουν καθιερωθεί πρωτόκολλα αξιολόγησης κλινικών συμπτωμάτων, τα οποία στηρίζουν τη διαφορική διάγνωση (\emph{\cite{Koller2018TableGuidelines}}), τα συμπτώματα που παρουσιάζουν κινητική παθολογία είναι πιθανόν να αλληλεπικαλύπτονται με άλλες παθήσεις του νευρικού συστήματος (\emph{\cite{Tolosa2021ChallengesDisease}}). 
+    \par
+        Μια έγκαιρη διάγνωση η οποία στηρίζεται σε βιοδείκτες, όπως ενδείξεις εγκεφαλογραφημάτων, απεικονιστικών εξετάσεων όπως αυτής της μαγνητικής τομογραφίας εγκεφάλου αλλά και βιολογικού υλικού όπως εγκεφαλονωτιαίου υγρού αλλά και προϊόντα αίματος δεν έχουν καθιερωθεί καθώς ποικίλες έρευνες διαπραγματεύονται την ανεύρεση βιοδεικτών από διάφορες πηγές του οργανισμού (\emph{\cite{Miller2015BiomarkersFuture}}) (\emph{\cite{Maitin2022SurveyReview}}).
+    \par
+        Στην παρούσα εργασία χρησιμοποιούνται δείγματα ολικού αίματος ως μια προσιτή και πλούσια πηγή βιολογικής πληροφορίας. Ταυτόχρονα η αφθονία μεταγραφικής πληροφορίας που εμπεριέχεται στο αίμα, καθιστά μια εξαιρετική πρόκληση στην εύρεση και διαφοροποίηση σημαντικής πληροφορίας ως προς την αναγνώριση πιθανών βιοδεικτών και λειτουργικών δικτύων που θα μπορούσαν να επιτρέψουν τον συσχετισμό με τη νόσο του Πάρκινσον.
+    \par
+        Τα εργαλεία της βιοπληροφορικής που χρησιμοποιήθηκαν σε αυτή τη διπλωματική εργασία είναι μέθοδοι στατιστικής ανάλυσης, όπως η διαφορική ανάλυση γονιδιακής έκφρασης, η ανάλυση εμπλουτισμού και η μηχανική μάθηση, για την ανεύρεση χαρακτηριστικών που καθιστούν πιθανή την αναγνώριση της νόσου αλλά και την διασταύρωση των αποτελεσμάτων με πληροφορίες από βάσεις δεδομένων σχολιασμού.
+        
+    \cleardoublepage
+
+    \chapter*{Abstract}
+    \addcontentsline{toc}{chapter}{Abstract}
+        \selectlanguage{english}
             \par
-                H εργασία αυτή διαπραγματεύεται την ανάλυση μεταγραφικών δεδομένων αλληλούχισης RNA από δείγματα ολικού αίματος, καθώς και την χαρτογράφηση πιθανών λειτουργικών δικτύων στη νόσο του Πάρκινσον. Σκοπό αποτελεί η εφαρμογή κατάλληλων βιοπληροφοριακών εργαλείων προκειμένου να εντοπιστούν διαφορές στη γονιδιακή έκφραση μεταξύ συγκεκριμένων δεδομένων της νόσου και παράλληλα να αναζητηθούν γονίδια-στόχοι που εμπλέκονται στην παθοφυσιολογία.
+                This thesis handles the analysis of trancriptome data from RNA sequencing on whole-blood samples and the mapping of functional gene networks in Parkinson's disease. It aims at the application of suitable bioinformatics toolsets in order to recognise differences in gene expressions between particular data of the disease and in parallel to search for target genes with possible involvement in the pathophysiology.
             \par
-                Η νόσος του Πάρκινσον χαρακτηρίζεται από έντονη κινητική δυσχέρεια με χαρακτηριστικό τρόμο στα άκρα και οφείλεται στην απώλεια ντοπαμινεργικών νευρώνων στην μέλαινα ουσία του εγκεφάλου. Η απώλεια λειτουργικών νευρώνων οδηγεί στην μείωση έκλυσης του νευροδιαβιβαστή της Ντοπαμίνης και οφείλεται στην συσσώρευση της πρωτεΐνης α-Συνουκλεϊνης και τη διαμόρφοση των λεγόμενων σωμάτιων Lewy εντός του κυττοπλάσματος των ντοπαμινεργικών νευρώνων (\emph{\cite{Balestrino2020ParkinsonDisease}}).
+                Parkinson's disease on the surface is defined by intense movement distress with a characteristic tremor on the limbs which is assumed to be due to the loss of dopaminergic neurons in the substantia nigra of the brain. The loss of functional neurons leads to progressive reduction of the neurotransmitter Dopamine and effectively happens because of accumulation of α-Synuclein to Lewy bodies in the inside of the dopaminergic cells (\emph{\cite{Balestrino2020ParkinsonDisease}}).
             \par
-                Τα δείγματα προέρχονται από μια εκτεταμένη μελέτη, την Parkinson Progression Markers Initiative \emph{(PPMI\footnote{https://www.ppmi-info.org/})} τα οποία διανέμονται διαδικτυακά κατόπιν εγγραφής στις σελίδας του Imaging and Data Archive \emph{(IDA\footnote{https://ida.loni.usc.edu/})}. Πρόκειται για μια πολυδιάστατη μελέτη, καθώς πέραν των δεδομένων αλληλούχισης μεταγραφώματος διανέμονται μεταξύ άλλων και δεδομένα πρωτεομικής, μεθυλίωσης, κλινικών μελετών και απεικονιστικών εξετάσεων από ομάδες νοσούντων, ελέγχου αλλά και ατόμων με πιθανή γενετική προδιάθεση, ως φορείς γενετικών μεταλλάξεων σε γνωστά γονίδια τα οποία εμπλέκονται στην παθοφυσιολογία της νόσου.
+                The samples used in the this thesis originate from a large-scale study, the Parkinson Progression Markers Initiative (\emph{PPMI}) which are made available to download on the internet after registration on the pages of the Imaging and Data Archive (\emph{IDA}). It is indeed a multi-dimensional study since there are results from several examinations available apart from genetic data, such as Proteomics results, Methylation profiles, Clinical studies and Imaging results from case and control cohorts and dditionally from individuals with a possible genetic predisposition as carriers of genetic mutations in genes that are known to be involved in the pathophysiology of the disease.
             \par
-                Καθώς τα διαγνωστικά πρωτόκολλα στηρίζονται κατά βάση σε κλινική αξιολόγηση των κινητικών συμπτωμάτων από ειδικούς νευρολόγους. Έχουν καθιερωθεί πρωτόκολλα αξιολόγησης κλινικών συμπτωμάτων, τα οποία στηρίζουν τη διαφορική διάγνωση (\emph{\cite{Koller2018TableGuidelines}}), τα συμπτώματα που παρουσιάζουν κινητική παθολογία είναι πιθανόν να αλληλεπικαλύπτονται με άλλες παθήσεις του νευρικού συστήματος (\emph{\cite{Tolosa2021ChallengesDisease}}). 
+                Since the diagnostic protocols are based on clinical assessment of the symptoms from neurologists and standards that guide the diagnosis (\emph{\cite{Koller2018TableGuidelines}}), symptoms still may overlap with other disease of the nervous system that also have a severe impact on the locomotor system (\emph{\cite{Tolosa2021ChallengesDisease}}).
+            \par
+                An early diagnosis that relies on biomarkers like indications from EEG's or MRI's and also biological samples like cerebrospinal fluid and ideally non-invasive samples like blood products, haven't been established by now and several research attempts focus on biomarker discovery from different sources of the organism (\emph{\cite{Miller2015BiomarkersFuture}}) (\emph{\cite{Maitin2022SurveyReview}}).
             \newpage
             \par
-                Μια έγκαιρη διάγνωση η οποία στηρίζεται σε βιοδείκτες, όπως ενδείξεις εγκεφαλογραφημάτων, απεικονιστικών εξετάσεων όπως αυτής της μαγνητικής τομογραφίας εγκεφάλου αλλά και βιολογικού υλικού όπως εγκεφαλονωτιαίου υγρού αλλά και προϊόντα αίματος δεν έχουν καθιερωθεί καθώς ποικίλες έρευνες διαπραγματεύονται την ανεύρεση βιοδεικτών από διάφορες πηγές του οργανισμού (\emph{\cite{Miller2015BiomarkersFuture}}) (\emph{\cite{Maitin2022SurveyReview}}).
+                The present thesis uses whole-blood samples as a non-invasive and affordable source of information. At the same time, the abundance of transcriptomic information included in the blood bears an extraordinary challenge for the search and recognition of potential biomarkers and functional networks that could allow a correlation with Parkinson's disease.
             \par
-                Στην παρούσα εργασία χρησιμοποιούνται δείγματα ολικού αίματος ως μια προσιτή και πλούσια πηγή βιολογικής πληροφορίας. Ταυτόχρονα η αφθονία μεταγραφικής πληροφορίας που εμπεριέχεται στο αίμα, καθιστά μια εξαιρετική πρόκληση στην εύρεση και διαφοροποίηση σημαντικής πληροφορίας ως προς την αναγνώριση πιθανών βιοδεικτών και λειτουργικών δικτύων που θα μπορούσαν να επιτρέψουν τον συσχετισμό με τη νόσο του Πάρκινσον.
-            \par
-                Τα εργαλεία της βιοπληροφορικής που χρησιμοποιήθηκαν σε αυτή τη διπλωματική εργασία είναι μέθοδοι στατιστικής ανάλυσης, όπως η διαφορική ανάλυση γονιδιακής έκφρασης, η ανάλυση εμπλουτισμού και η μηχανική μάθηση, για την ανεύρεση χαρακτηριστικών που καθιστούν πιθανή την αναγνώριση της νόσου αλλά και την διασταύρωση των αποτελεσμάτων με πληροφορίες από βάσεις δεδομένων σχολιασμού.
-        \end{spacing}
-        \newpage
-        \section*{Abstract}
-            \selectlanguage{english}
-            \begin{spacing}{1.5}
-                \par
-                    This thesis handles the analysis of trancriptome data from RNA sequencing on whole-blood samples and the mapping of functional gene networks in Parkinson's disease. It aims at the application of suitable bioinformatics toolsets in order to recognise differences in gene expressions between particular data of the disease and in parallel to search for target genes with possible involvement in the pathophysiology.
-                \par
-                    Parkinson's disease on the surface is defined by intense movement distress with a characteristic tremor on the limbs which is assumed to be due to the loss of dopaminergic neurons in the substantia nigra of the brain. The loss of functional neurons leads to progressive reduction of the neurotransmitter Dopamine and effectively happens because of accumulation of α-Synuclein to Lewy bodies in the inside of the dopaminergic cells (\emph{\cite{Balestrino2020ParkinsonDisease}}).
-                \par
-                    The samples used in the this thesis originate from a large-scale study, the Parkinson Progression Markers Initiative (\emph{PPMI}) which are made available to download on the internet after registration on the pages of the Imaging and Data Archive (\emph{IDA}). It is indeed a multi-dimensional study since there are results from several examinations available apart from genetic data, such as Proteomics results, Methylation profiles, Clinical studies and Imaging results from case and control cohorts and dditionally from individuals with a possible genetic predisposition as carriers of genetic mutations in genes that are known to be involved in the pathophysiology of the disease.
-                \par
-                    Since the diagnostic protocols are based on clinical assessment of the symptoms from neurologists and standards that guide the diagnosis (\emph{\cite{Koller2018TableGuidelines}}), symptoms still may overlap with other disease of the nervous system that also have a severe impact on the locomotor system (\emph{\cite{Tolosa2021ChallengesDisease}}).
-                \par
-                    An early diagnosis that relies on biomarkers like indications from EEG's or MRI's and also biological samples like cerebrospinal fluid and ideally non-invasive samples like blood products, haven't been established by now and several research attempts focus on biomarker discovery from different sources of the organism (\emph{\cite{Miller2015BiomarkersFuture}}) (\emph{\cite{Maitin2022SurveyReview}}).
-                \newpage
-                \par
-                    The present thesis uses whole-blood samples as a non-invasive and affordable source of information. At the same time, the abundance of transcriptomic information included in the blood bears an extraordinary challenge for the search and recognition of potential biomarkers and functional networks that could allow a correlation with Parkinson's disease.
-                \par
-                    The bioinformatics toolset as employed in this thesis contains methods from the field of biostatistical analysis, like differential gene expression analysis or gene-set enrichment analysis and machine learning for finding potential features that could aid as diagnostical support and to validate the information against enrichment and annotation resources.
-            \end{spacing}
-        \newpage
-        \begin{spacing}{1.5}
-            \selectlanguage{english}
-            \printbibliography[title={Βιβλιογραφικές αναφορές}]
-        \end{spacing}
+                The bioinformatics toolset as employed in this thesis contains methods from the field of biostatistical analysis, like differential gene expression analysis or gene-set enrichment analysis and machine learning for finding potential features that could aid as diagnostical support and to validate the information against enrichment and annotation resources.
+    
+    \selectlanguage{greek}
+    \cleardoublepage
+    \tableofcontents
+    \thispagestyle{mainstyle}
+    \addtotoc{\contentsname}
+    \cleardoublepage
+
+    \addcontentsline{toc}{chapter}{\listfigurename}
+    \listoffigures
+    \thispagestyle{mainstyle}
+
+    \cleardoublepage
+    \addcontentsline{toc}{chapter}{\listtablename}
+    \listoftables
+    \thispagestyle{mainstyle}
+
+    \cleardoublepage
+    \printnomenclature[2.5cm] % The number sets indent
+    \thispagestyle{mainstyle}
+    \addcontentsline{toc}{chapter}{\nomname}
+    
+    % Main matter
+    \cleardoublepage
+    \pagestyle{mainstyle}
+    \pagenumbering{arabic}
+    
+    \chapter{Εισαγωγή}
+    \section{First Section}
+    \subsection{First Subsection}
+    \subsubsection{First Subsubsection}
+
+    % Add abbreviations where they're first used
+    \nomenclature{AU}{Astronomical Unit}
+    \nomenclature{CPU}{Central Processing Unit}
+    
+    Text with 12pt font, justified alignment, and 1.5 line spacing.
+    
+    % \begin{figure}[H]
+    %     \centering
+    %     \includegraphics[width=0.5\textwidth]{example-image}
+    %     \caption{Example figure caption}
+    % \end{figure}
+    
+    % \begin{table}[H]
+    %     \centering
+    %     \begin{tabular}{ll}
+    %         Header 1 & Header 2 \\
+    %         Content 1 & Content 2 \\
+    %     \end{tabular}
+    %     \caption{Example table caption}
+    % \end{table}
+
 \end{document}
