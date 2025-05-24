@@ -25,6 +25,7 @@
 \usepackage{caption}
 \usepackage[justification=centering]{caption}
 \usepackage[noabbrev]{cleveref}
+
 \usepackage[font={smaller,it}]{caption}
 \usepackage[backend=biber, style=apa, sorting=ynt]{biblatex}
 \usepackage{setspace}
@@ -33,6 +34,9 @@
 \usepackage{fancyhdr}
 \usepackage{etoolbox}
 \usepackage{tocloft}
+\usepackage{listings}
+\usepackage{cleveref}
+\usepackage{xcolor}
 \addbibresource{references.bib}
 \usepackage{nomencl}
 \captionsetup{figurename=Εικόνα}
@@ -42,6 +46,34 @@
 
 % \pagestyle{fancy}
 % \fancyhf{} % Clear all headers/footers
+% \addto\captionsgreek{%
+%   \crefname{lstlisting}{κώδικας}{κώδικες}%
+%   \Crefname{lstlisting}{Κώδικας}{Κώδικες}%
+%   \crefname{appendix}{παράρτημα}{παραρτήματα}%
+%   \Crefname{appendix}{Παράρτημα}{Παραρτήματα}%
+% }
+
+\titleformat{\chapter}[display]
+    {\fontsize{16pt}{18pt}\selectfont\bfseries\raggedright}
+    {\appendixname\ \thechapter}
+    {0pt}
+    {}
+\titlespacing*{\chapter}{0pt}{0pt}{18pt}
+
+\lstset{
+    basicstyle=\fontsize{9}{11}\selectfont\ttfamily, % Courier New equivalent
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    tabsize=4,
+    backgroundcolor=\color{gray!5},
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!50!black},
+    stringstyle=\color{red},
+    showstringspaces=false
+}
 
 \fancypagestyle{mainstyle}{
     \fancyhf{}
@@ -74,8 +106,6 @@
 \newcommand{\nostarchapter}[1]{\oldchapter{#1}\thispagestyle{mainstyle}}
 \makeatother
 
-
-% Add to your preamble:
 \makenomenclature
 \renewcommand{\nomname}{Συντομογραφίες και Ακρωνύμια} % Custom title
 \renewcommand{\nomlabelwidth}{2.5cm} % Adjust as needed
@@ -129,7 +159,7 @@
     {\thesection}
     {1em}
     {}
-\titlespacing*{\section}{0pt}{0pt}{12pt}
+\titlespacing*{\section}{0pt}{12pt}{12pt}
 
 % Subsection formatting
 \titleformat{\subsection}
@@ -382,15 +412,48 @@
     \pagenumbering{arabic}
     
     \chapter{Εισαγωγή}
-    \section{First Section}
-    \subsection{First Subsection}
-    \subsubsection{First Subsubsection}
+    \par
+        Χρησιμοποιήθηκαν δεδομένα RNA από το Project 133 IR3 με τελευταία έκδοση την 4η Φεβρουαρίου 2021, σύμφωνα με τη σελίδα του PPMI\nomenclature{PPMI}{Parkinson's Progression Markers Initiative}. Το σύνολο των δειγμάτων καθώς και αρχείο CSV το οποίο περιλαμβάνει μέτα-πληροφορίες αναφορικά με τα δείγματα διενεργήθηκε μέσω Download μετά από εγγραφή στις σελίδες του παρόχου δεδομένων της μελέτης του PPMI, IDA\nomenclature{IDA}{Imaging and Data Archive}. Το συμπιεσμένο αρχείο περιλαμβάνει μεμονωμένα αρχεία για κάθε δείγμα. Υπάρχουν αρχεία με τιμές έκφρασης με κανονικοποίηση TPM\nomenclature{TPM}{Transcripts per Million} (\emph{\cite{Zhao2021TPMRepository}}) και με μετατροπή σε μορφή feature counts (\emph{\cite{Liao2014FeatureCounts:Features}}). Η ανάκτηση σε FASTQ \nomenclature{FASTQ}{Επέκταση του τύπου FASTA - Τύπος αρχείου βασισμένο σε κείμενο για την καταγραφή βιολογικών αλληλουχιών} δεν είναι δυνατή διαδικτυακά, παρά μόνο με αποστολή σκληρού δίσκου μετά από ειδική αίτηση από την έδρα του IDA στις ΗΠΑ. Πρόκειται για όγκο δεδομένων μεγέθους 184 TB\nomenclature{TB}{Tera Byte} σύμφωνα με το εγχειρίδιο \footnote{\url{https://www.ppmi-info.org/sites/default/files/docs/PPMI\%20Data\%20User\%20Guide.pdf}}.
+    \par
+        Στην παρούσα εργασία έγινε χρήση των feature counts μιας και η κανονικοποίηση σε TPM θα περιόριζε την καταλληλότητα των δεδομένων ως προς την ανάλυση, ειδικά σε μεθόδους όπως την ανάλυση διαφορικής έκφρασης. Αυτό οφείλεται στο γεγονός ότι η συγκεκριμένη κανονικοποίηση γενικά λειτουργεί σε επίπεδο δείγματος, καθιστώντας τα δείγματα ακατάλληλα για μια μεταξύ τους σύγκριση. Ιδανικά, τα πακέτα λογισμικού ανάλυσης γονιδιακής έκφρασης όπως DESeq (\emph{το οποίο χρησιμοποιήθηκε και σε αυτή την εργασία}) απαιτούν τα δεδομένα σε RAW, δηλαδή ακατέργαστη μορφή, χωρίς κάποια κανονικοποίηση. Δεδομένου των προϋποθέσεων για μια ανάκτηση των αντίστοιχων πληροφοριών, όπως αναφέρθηκε και παραπάνω, η μορφή feature counts φάνηκε ως η πιο κατάλληλη καθώς είναι ότι πιο κοντινό σε ακατέργαστα δεδομένα μεταγραφικής πληροφορίας.
+        
+    \section{Συγκρότηση και Συγχόνευση Δεδομένων}
+        \par
+            Τα δεδομένα της μελέτης του PPMI περιέχουν ξεχωριστά αρχεία ανά δείγμα. Για την ανάλυση είναι χρήσιμη η διάθεση ενός μοναδικού συνόλου με όλα τα δείγματα, τις τιμές έκφρασης ανά δείγμα αλλά και μέτα-πληροφορίες όπως σε ποια ομάδα, ελέγχου ή νοσούντων, ανήκει ένα δείγμα, το φύλο, η ηλικία κα. για την συγκρότηση ενός τέτοιου συνόλου συγγράφηκε το σενάριο στον κώδικα~\ref{lst:readdatapy} και το σενάριο στον κώδικα~\ref{lst:preparedatapy}. Στο πρώτο συλλέγονται τα αρχεία-δείγματα και καταγράφονται σε ένα CSV\nomenclature{CSV}{Comma Separated Values} αρχείο, ενώ στο 2ο γίνεται ανάγνωση αυτού του αρχείου, επικόλληση των μέτα-δεδομένων ανά δείγμα και εκκαθάριση του συνόλου εφαρμόζοντας φίλτρο σε στήλη η οποία ορίζει αν ένα δείγμα πληροί τα ποιοτικά κριτήρια του πειράματος ή όχι. Σαφώς στο σενάριο γίνεται εκκαθάριση όσων δειγμάτων δεν φέρουν την τιμή "pass" στην αντίστοιχη στήλη.
+        \par
+            Για την καλύτερη διαχείριση, σε οποιοδήποτε αναλυτικό σκέλος της εργασίας, θεωρήθηκε σκόπιμη η συγκρότηση των δεδομένων σε αντικείμενο AnnData καθώς και η αποθήκευση σε αρχείο τύπου h5ad. Ακολουθεί μια ιεραρχική δομή όπου παρέχεται εύκολη πρόσβαση σε παρατηρήσεις (\emph{obs}) και σε μεταβλητές (\emph{var}) αλλά και σε άλλες συλλογές πληροφορίας, όπως κανονικοποιημένες τιμές έκφρασης και πίνακες αντιστοίχησης με σύμβολα γονιδίων. Επιπλέων, οι μεμονομένες ηλικίες ανά άτομο συγκροτήθηκαν στις ηλικιακές ομάδες 30-50, 50-70, 70-80 και >80 (\emph{κώδικας~\ref{lst:dataconsolidationpy}}).
+            \begin{figure}[h]
+                \centering
+                \includegraphics[width=0.8\textwidth]{anndata_structure.png}
+                \caption{Δομή του AnnData αντικειμένου της εργασίας}
+                \label{fig:figure-1}
+            \end{figure}
+    \section{Μέθοδοι}
+        \par
+            Το σύνολο των δεδομένων που επιλέχθηκε σε αυτή την εργασία περιέχει μερικές αξιοσημείωτες προκλήσεις για την ανάλυση. Αφενός, αυτές προκύπτουν από τη φύση των δειγμάτων αίματος, όπου η ποικιλία μεταγραφικού προϊόντος είναι πιθανόν να εμπεριέχει και βιολογικό θόρυβο, ο οποίος δύναται να υπερκαλύπτει τυχόν σχετική με τη νόσο του Πάρκινσον πληροφορία. Αφετέρου, η ηλικία και το φύλο μπορεί να συμβάλουν σημαντικά σε μία διαφοροποίηση των δειγμάτων με χρήση στατιστικών μεθόδων ή αλγορίθμων μηχανικής μάθησης. Επιπλέον, τα άτομα που συμμετείχαν στη μελέτη κλήθηκαν σε επανειλημμένη δειγματοληψία, συνολικά σε πέντε επισκέψεις, σε απόσταση δύο μηνών από την προηγούμενη. Εξ αυτού κρίθηκε αναγκαία η στρωματοποίηση (\emph{Stratification}) των δειγμάτων σύμφωνα με το φύλο, την ηλικία αλλά και τις επισκέψεις.
+        \par
+            Με στόχο την λεπτομερή ανάλυση της γονιδιακής έκφρασης για την εξερεύνηση πιθανών λειτουργικών δικτύων, καθιερώθηκε προτώκολλο ανάλυσης αποτελούμενο από:
+            \begin{enumerate}
+                \item Την ανάλυση κυρίων συνιστωσών PCA\nomenclature{PCA}{Principal Component Analysis}, για την εξερεύνηση των δεδομένων, σύμφωνα με διαφορετικούς παράγοντες που πιθανώς επηρεάζουν τις τιμές έκφρασης.
+                \item Την αποσυνέλιξη (\emph{Deconvolution}) των δειγμάτων ως προς την ανάδειξη μεταγραφικού προϊόντος από κύτταρα του ανοσοποιητικού, καθώς και την χρήση των αποτελεσμάτων της αποσυνέλιξης ως συμμεταβλητές στην διαφορική ανάλυση.
+                \item Την ανάλυση διαφορικής έκφρασης ανά στρώμα, για την ανάδειξη διαφορικά εκφραζόμενων γονιδίων.
+                \item Την εφαρμογή κατάλληλων αλγορίθμων επιλογής χαρακτηριστικών, ως προετοιμασία συνόλων δεδομένων για την εφαρμογή αλγορίθμων επιβλεπομένης μηχανικής μάθησης.
+                \item Την εφαρμογή ευρέως διαδομένων αλγορίθμων μηχανικής μάθησης στους τομείς της βιοπληροφορικής και την εξαγωγή χαρακτηριστικών που κρίθηκαν από τον εκάστοτε αλγόριθμο ως σημαντικά για την κατηγοριοποίηση.
+                \item Την εφαρμογή της ανάλυσης εμπλουτισμού GSEA\nomenclature{GSEA}{Gene Set Enrichment Analysis} σε γονίδια που αναγνωρίστικαν ως διαφορικά εκφραζόμενα και σε αυτά που χαρακτηρίστικαν σημαντικά κατά την καηγοριοποίηση.
+                \item Την αποτίμηση και σύκγριση των αποτελεσμάτων της ανάλυσης διαφορικής έκφρασης και της μηχανικής μάθησης.
+                \item Την ανάλυση και κατασκευή/οπτικοποίηση πιθανών δικτύων συνέκφρασης σε γονίδια που βρέθηκαν ως διαφορικά εκφραζόμενα καθώς και από την σημαντικότητα χαρακτηριστικών των αποτελεσμάτων των αλγόρίθμων μηχανικής μάθησης.
+            \end{enumerate}
+    \chapter{Ανάλυση των δεδομένων}
+        \section{Χαρακτηρισμός του συνόλου δεδομένων}
+        
+    % \subsection{First Subsection}
+    % \subsubsection{First Subsubsection}
 
     % Add abbreviations where they're first used
-    \nomenclature{AU}{Astronomical Unit}
-    \nomenclature{CPU}{Central Processing Unit}
+    % \nomenclature{AU}{Astronomical Unit}
+    % \nomenclature{CPU}{Central Processing Unit}
     
-    Text with 12pt font, justified alignment, and 1.5 line spacing.
+    % Text with 12pt font, justified alignment, and 1.5 line spacing.
     
     % \begin{figure}[H]
     %     \centering
@@ -406,5 +469,187 @@
     %     \end{tabular}
     %     \caption{Example table caption}
     % \end{table}
+
+    \cleardoublepage
+    \appendix
+    \chapter*{Παράρτημα}
+    \addcontentsline{toc}{chapter}{Παράρτημα}
+    
+    \section*{Κώδικας Προγραμμάτων}\label{thesis:code}
+    % \lstset{language=R}
+    \begin{lstlisting}[language=Python,caption={read-data.py: Συκγρότηση CSV αρχείου με το σύνολο των δειγμάτων},label=lst:readdatapy]
+    import pandas as pd
+    import numpy as np
+    import glob
+    import os
+    from tqdm import tqdm
+    from multiprocessing import Pool, cpu_count
+    
+    def read_csv(filename):
+        df = pd.read_csv(filename, sep="\t", comment="#", header=None, skiprows=1)
+        df.columns = ["GeneID", "Chr", "Start", "End", "Strand", "Length", "Counts"]
+        df = df[["GeneID", "Counts"]].set_index("GeneID")
+        df.rename(columns={"Counts": os.path.basename(filename)}, inplace=True)
+        return df
+    
+    def main():
+        num_workers = min(6, cpu_count())
+        count_files = glob.glob("/Volumes/Elements/counts/*.txt")
+        count_files_len = len(count_files)
+        count_files_len=10
+        all_counts = []
+        with Pool(num_workers) as pool:
+            for result in tqdm(pool.imap_unordered(read_csv, count_files[1:10]), total=count_files_len, desc="Reading files"):
+                all_counts.append(result)
+    
+        all_counts = pd.concat(all_counts, axis=1, join="outer")
+        all_counts = all_counts.apply(pd.to_numeric, errors="coerce").fillna(0)
+        all_counts.to_csv("ppmi_counts_matrix.csv", index=True)
+    
+        print("Done")
+
+        if __name__ == '__main__':
+            main()
+    \end{lstlisting}
+    \begin{lstlisting}[language=Python,caption={prepare-data.py: Εισαγωγή Metadata και φιλτράρισμα ακατάλληλων δειγμάτων},label=lst:preparedatapy]
+        import pandas as pd
+    
+        def main():
+            metadata = pd.read_csv("/Volumes/Elements/metaDataIR3.csv")
+            metadata = metadata[metadata["QCflagIR3"].str.lower() == "pass"]
+            counts = pd.read_csv("ppmi_counts_matrix.csv")
+        
+            counts = counts.set_index("GeneID")
+            pattern = r"(\d+\-SL-\d+)"
+            new_colnames = counts.columns.str.extract(pattern, expand=False)
+            counts.columns = new_colnames
+            metadata = metadata.set_index("HudAlphaID")
+            merged = metadata.join(counts.T)
+            merged.to_csv("ppmi_clean_counts_meta.csv")
+        
+        if __name__ == '__main__':
+            main()
+    \end{lstlisting}
+    \begin{lstlisting}[language=Python,caption={data\_consolidation.py: Συγχώνευση δεδομένων σε H5AD τύπο αρχείου}, label=lst:dataconsolidationpy]
+        import pandas as pd
+        import mygene
+        import re
+        import anndata as ad
+        import numpy as np
+        import anndata as ad
+        import numpy as np
+        
+        genetic_mapping = {
+            'ENRLPINK1': 'PINK1',
+            'ENRLPRKN': 'PRKN',
+            'ENRLSRDC': 'SRDC',
+            'ENRLHPSM': 'HPSM',
+            'ENRLRBD': 'RBD',
+            'ENRLLRRK2': 'LRRK2',
+            'ENRLSNCA': 'SNCA',
+            'ENRLGBA': 'GBA'
+        }
+        
+        def get_genetic_group(row):
+            for col, group in genetic_mapping.items():
+                if row[col] == 1:
+                    return group
+            return 'None'
+        
+        def map_age_group(age):
+            if 30 <= age <= 50:
+                return "30-50"
+            elif 50 < age <= 70:
+                return "50-70"
+            elif 70 < age <= 80:
+                return "70-80"
+            elif age > 80:
+                return ">80"
+            return "Unknown"
+        
+        def main():
+            bulk_feature_counts = pd.read_csv("/Users/kpax/Documents/aep/study/MSC/lab/PPMI_Project_133_RNASeq/ppmi_counts_meta_dataset.csv", index_col=0)
+            patient_status = pd.read_csv("/Users/kpax/Documents/aep/study/MSC/lab/PPMI_Project_133_RNASeq/Participant_Status_19Mar2025.csv")
+            genetic_groups = patient_status[['PATNO'] + list(genetic_mapping.keys())].copy()
+            genetic_groups['Genetic_Group'] = genetic_groups.apply(get_genetic_group, axis=1)
+            bulk_feature_counts = bulk_feature_counts.merge(
+                genetic_groups[['PATNO', 'Genetic_Group']],
+                left_on='Patient',
+                right_on='PATNO',
+                how='left'
+            ).set_index(bulk_feature_counts.index)
+        
+            counts_raw = bulk_feature_counts.iloc[:,bulk_feature_counts.columns.str.startswith("ENSG")]
+            counts_raw_t = counts_raw.T
+            trunc_eid = [re.sub(r"\.\d+$", "", eid) for eid in counts_raw_t.index.values.tolist()]
+        
+            mg = mygene.MyGeneInfo()
+            mappings = mg.querymany(
+                trunc_eid,
+                scopes="ensembl.gene",
+                fields="symbol",
+                species="human"
+            )
+            df = pd.DataFrame(mappings)
+            df = df[['query', 'symbol']].rename(columns={'query': 'Ensembl_ID', 'symbol': 'Gene_Symbol'})
+            df['Gene_Symbol'] = df['Gene_Symbol'].fillna(df['Ensembl_ID'])
+            dup_counts = df['Ensembl_ID'].value_counts()
+            print(f"Total duplicates: {len(dup_counts[dup_counts > 1])}")
+            print(dup_counts[dup_counts > 1])
+        
+        
+            df_deduped = df.drop_duplicates(subset=['Ensembl_ID'], keep='first')
+            counts_raw_export = counts_raw_t.reset_index(drop=False)
+            counts_raw_export['index'] = trunc_eid
+            counts_raw_export = counts_raw_export.rename(columns={'index':'Ensembl_ID'})
+            counts_raw_export = (
+                counts_raw_export.merge(df_deduped, on='Ensembl_ID', how='left')
+                .set_index('Gene_Symbol')
+                .drop(columns=['Ensembl_ID'])
+            )
+        
+            bulk_feature_counts['Genetic_Group'] = bulk_feature_counts['Genetic_Group'].fillna('Unknown')
+        
+            patient_status['Age_Group'] = patient_status['ENROLL_AGE'].apply(map_age_group)
+        
+            age_group_mapping = patient_status[['PATNO', 'Age_Group']]
+        
+            bulk_feature_counts = bulk_feature_counts.merge(
+                age_group_mapping,
+                left_on='Patient',
+                right_on='PATNO',
+                how='left'
+            ).set_index(bulk_feature_counts.index)
+        
+            counts_raw_export.index.name = None
+        
+            ensembl_symbol_mapping = pd.DataFrame({
+                "gene_symbol": counts_raw_export.index,
+                "ensembl_id": counts_raw_t.index,
+                "trunc_eid": trunc_eid
+            }).set_index('ensembl_id')
+        
+            ppmi_adata = ad.AnnData(bulk_feature_counts.loc[:, bulk_feature_counts.columns.str.startswith("ENSG")])
+            ppmi_adata.obs['Sample'] = bulk_feature_counts['Sample'].values
+            ppmi_adata.obs['Diagnosis'] = bulk_feature_counts['Diagnosis'].values
+            ppmi_adata.obs['Visit'] = bulk_feature_counts['Visit'].values
+            ppmi_adata.obs['Gender'] = bulk_feature_counts['Gender'].values
+            ppmi_adata.obs['Patient'] = bulk_feature_counts['Patient'].values
+            ppmi_adata.obs['Genetic_Group'] = bulk_feature_counts['Genetic_Group'].values
+            ppmi_adata.obs['Age_Group'] = bulk_feature_counts['Age_Group'].values
+            ppmi_adata.layers['counts_log2'] = np.log2(ppmi_adata.X + 1)
+            ppmi_adata.layers['gene_symbols'] = counts_raw_export.T
+            ppmi_adata.varm['symbol_ensembl_mapping'] = ensembl_symbol_mapping
+        
+            ppmi_adata.write_h5ad("/Users/kpax/Documents/aep/study/MSC/lab/PPMI_Project_133_RNASeq/ppmi_adata.h5ad")
+        
+        if __name__ == '__main__':
+            main()
+    \end{lstlisting}
+    
+    % \section*{Επιπλέον Υλικά}
+    % [Your additional appendix content...]
+
+    \printbibliography
 
 \end{document}
