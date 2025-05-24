@@ -2,6 +2,7 @@
 \usepackage[greek]{babel}
 \usepackage{fontspec}
 \usepackage{graphicx}
+\usepackage{booktabs}
 %!TEX TS-program = xelatex
 %!TEX encoding = UTF-8 Unicode
 \usepackage{xltxtra}
@@ -22,6 +23,7 @@
 \usepackage{hyperref}
 \usepackage{makecell}
 \usepackage{float}
+\usepackage{chngcntr}
 \usepackage{caption}
 \usepackage[justification=centering]{caption}
 \usepackage[noabbrev]{cleveref}
@@ -39,7 +41,6 @@
 \usepackage{xcolor}
 \addbibresource{references.bib}
 \usepackage{nomencl}
-\captionsetup{figurename=Εικόνα}
 \captionsetup{tablename=Πίνακας}
 \renewcommand\theadfont{\bfseries}
 \renewcommand{\arraystretch}{1.5}
@@ -52,6 +53,25 @@
 %   \crefname{appendix}{παράρτημα}{παραρτήματα}%
 %   \Crefname{appendix}{Παράρτημα}{Παραρτήματα}%
 % }
+
+\captionsetup[figure]{
+  labelformat=simple,
+  labelsep=space,
+  name=Εικόνα,
+  format=plain
+}
+\counterwithin{figure}{chapter}
+
+\captionsetup[table]{
+  labelformat=simple,
+  labelsep=space,
+  name=Πίνακας,
+  format=plain
+}
+\counterwithin{table}{chapter}
+
+\renewcommand{\thesubfigure}{\roman{subfigure}}
+\renewcommand{\thesubtable}{\roman{subtable}}
 
 \titleformat{\chapter}[display]
     {\fontsize{16pt}{18pt}\selectfont\bfseries\raggedright}
@@ -191,8 +211,8 @@
     belowskip=12pt
 }
 \DeclareCaptionLabelFormat{chapter}{\thechapter.#1}
-\captionsetup[figure]{labelformat=chapter}
-\captionsetup[table]{labelformat=chapter}
+% \captionsetup[figure]{labelformat=chapter}
+% \captionsetup[table]{labelformat=chapter}
 
 % Prevent figure/table captions from breaking across pages
 % \pretocmd{\figure}{\begin{minipage}{\linewidth}}{}{}
@@ -432,7 +452,7 @@
         \par
             Το σύνολο των δεδομένων που επιλέχθηκε σε αυτή την εργασία περιέχει μερικές αξιοσημείωτες προκλήσεις για την ανάλυση. Αφενός, αυτές προκύπτουν από τη φύση των δειγμάτων αίματος, όπου η ποικιλία μεταγραφικού προϊόντος είναι πιθανόν να εμπεριέχει και βιολογικό θόρυβο, ο οποίος δύναται να υπερκαλύπτει τυχόν σχετική με τη νόσο του Πάρκινσον πληροφορία. Αφετέρου, η ηλικία και το φύλο μπορεί να συμβάλουν σημαντικά σε μία διαφοροποίηση των δειγμάτων με χρήση στατιστικών μεθόδων ή αλγορίθμων μηχανικής μάθησης. Επιπλέον, τα άτομα που συμμετείχαν στη μελέτη κλήθηκαν σε επανειλημμένη δειγματοληψία, συνολικά σε πέντε επισκέψεις, σε απόσταση δύο μηνών από την προηγούμενη. Εξ αυτού κρίθηκε αναγκαία η στρωματοποίηση (\emph{Stratification}) των δειγμάτων σύμφωνα με το φύλο, την ηλικία αλλά και τις επισκέψεις.
         \par
-            Με στόχο την λεπτομερή ανάλυση της γονιδιακής έκφρασης για την εξερεύνηση πιθανών λειτουργικών δικτύων, καθιερώθηκε προτώκολλο ανάλυσης αποτελούμενο από:
+            Με στόχο την λεπτομερή ανάλυση της γονιδιακής έκφρασης για την εξερεύνηση πιθανών λειτουργικών δικτύων, καθιερώθηκε πρωτόκολλο ανάλυσης αποτελούμενο από:
             \begin{enumerate}
                 \item Την ανάλυση κυρίων συνιστωσών PCA\nomenclature{PCA}{Principal Component Analysis}, για την εξερεύνηση των δεδομένων, σύμφωνα με διαφορετικούς παράγοντες που πιθανώς επηρεάζουν τις τιμές έκφρασης.
                 \item Την αποσυνέλιξη (\emph{Deconvolution}) των δειγμάτων ως προς την ανάδειξη μεταγραφικού προϊόντος από κύτταρα του ανοσοποιητικού, καθώς και την χρήση των αποτελεσμάτων της αποσυνέλιξης ως συμμεταβλητές στην διαφορική ανάλυση.
@@ -445,7 +465,49 @@
             \end{enumerate}
     \chapter{Ανάλυση των δεδομένων}
         \section{Χαρακτηρισμός του συνόλου δεδομένων}
-        
+        \par
+            Στην εικόνα \ref{fig:ppmi-proportion-of-genders-absolute-and-per-cohort} παρουσιάζονται οι αριθμοί συμμετεχόντων από κάθε φύλο, ανεξάρτητα από την ομάδα και τον τελικό αριθμό δειγμάτων. Πλην δύο μόνο συμμετεχόντων αγνώστου φύλου, ο χαρακτηρισμός των υπολοίπων είναι πλήρης για κάθε ομάδα. Το γράφημα στα δεξιά παρουσιάζει την ποσοστιαία κατανομή των συμμετεχόντων ανά φύλο και ομάδα. Στο κάτω μέρος παρουσιάζονται οι αριθμοί συμμετεχόντων της κάθε ομάδας ανά επίσκεψη (\emph{Visit}). Στην παρούσα εργασία χρησιμοποιήθηκαν μόνο δείγματα των ομάδων PD \nomenclature{PD}{Parkinson's Disease} και Control. Το πλήθος συμμετεχόντων για αυτές τις δύο ομάδες παρουσιάζεται στο γράφημα κάτω δεξιά, όπου απεικονίζονται οι απόλυτοι αριθμοί ατόμων ανά ομάδα και επίσκεψη. Χαρακτηριστικό είναι ότι η ομάδα ελέγχου υστερεί σε πλήθος της ομάδας PD, γεγονός το οποίο πρέπει να λαμβάνεται υπόψη ιδιαίτερα στην μοντελοποίηση κατηγοριοποιητών μηχανικής μάθησης.
+            \begin{figure}[h]
+                \centering
+                \includegraphics[width=0.73\linewidth]{Chapter-2-Section-2.1/ppmi-prop-gender-abs-per-cohort_samples-per-coh-visit-all-coh_pd-vs-ctrl.png}
+                \caption[Πλήθος συμμετέχοντων ανά φύλο]{Επάνω αριστερά: Συμμετέχοντες ανά φύλο συνολικα, Επάνω δεξιά: Συμμετέχοντες ανά ομάδα. Κάτω αριστερά: Συμμετέχοντες ανά ομάδα και επίσκεψη. Κάτω δεξιά: Συμμετέχοντες ανά ομάδα και επίσκεψη.}
+                \label{fig:ppmi-proportion-of-genders-absolute-and-per-cohort}
+            \end{figure}
+
+        \section{Ανάλυση κυρίων συνιστωσών}
+            \par
+                Στην εικόνα \ref{fig:ppmi-pca-pd-ctrl-all-visits-hue_diagnosis} παρουσιάζεται το αποτέλεσμα της PCA για τις πρώτες πέντε συνιστώσες όπου ο χρωματισμός πραγματοποιήθηκε σύμφωνα με τη διάγνωση. Δεν διακρίνονται ξεχωριστές συστάδες, γεγονός που συνιστά πως η μεταβλητότητα των εκφράσεων δεν διαχωρίζει σε αυτό το επίπεδο ανάλυσης δείγματα νοσούντων από υγιείς. Ενδιαφέρουσα είναι η απεικόνιση κυρίων συνιστωσών με χρωματισμό με βάση το φύλο, όπου διακρίνονται συστάδες μεταξύ της πέμπτης συνιστώσας και όλων των υπολοίπων. Το συμπέρασμα είναι, πως υπάρχει μεταβλητότητα σύμφωνα με γονιδιακές εκφράσεις στα δείγματα ολικού αίματος με την οποία δύναται να διακριθούν τα δείγματα των δύο φύλων. Πρόκειται για πολύ μικρό μέρος εκ του συνόλου της μεταβλητότητας (\emph{Πίνακας~\ref{tab:pca}}). Η στρωμάτωση των δειγμάτων σε παρακάτω βήματα χρησιμεύει προς αποφυγήν της όποιας πιθανής παρεμβολής στις διάφορες αναλύσεις.
+
+            \begin{figure}[ht]
+                \centering
+                \begin{subfigure}[b]{0.48\textwidth}
+                    \centering
+                    \includegraphics[width=\linewidth,height=7cm]{Chapter-2-Section-2.1/ppmi-pca-pd-ctrl-all-visits-hue_diagnosis.png}
+                    \caption{PCA σύμφωνα με την διάγνωση}
+                    \label{fig:ppmi-pca-pd-ctrl-all-visits-hue_diagnosis}                
+                \end{subfigure}
+                \hfill
+                \begin{subfigure}[b]{0.48\textwidth}
+                    \centering
+                    \includegraphics[width=\linewidth,height=7cm]{Chapter-2-Section-2.1/ppmi-pca-pd-ctrl-all-visits-hue_gender.png}
+                    \caption{PCA σύμφωνα με τo φύλο}
+                    \label{fig:ppmi-pca-pd-ctrl-all-visits-hue_gender}                    
+                \end{subfigure}
+            \end{figure}
+
+            \begin{table}[ht]
+                \centering
+                \caption{Μεταβλητότητα ανά συνιστώσα}
+                \begin{tabular}{lcccc} % No vertical lines
+                    \toprule
+                    \textbf{PC 1} & \textbf{PC 2} & \textbf{PC 3} & \textbf{PC 4} & \textbf{PC 5} \\
+                    \midrule
+                    57,65\% & 7,43\% & 2,54\% & 1,20\% & 0,95\% \\
+                    \bottomrule
+                \end{tabular}
+                \label{tab:pca}
+            \end{table}           
+
     % \subsection{First Subsection}
     % \subsubsection{First Subsubsection}
 
