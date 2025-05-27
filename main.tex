@@ -120,6 +120,7 @@
 }
 
 \makeatletter
+
 \let\oldchapter\chapter
 \renewcommand{\chapter}{\@ifstar{\starchapter}{\nostarchapter}}
 \newcommand{\starchapter}[1]{\oldchapter*{#1}\thispagestyle{mainstyle}}
@@ -437,7 +438,7 @@
     \par
         Στην παρούσα εργασία έγινε χρήση των feature counts μιας και η κανονικοποίηση σε TPM θα περιόριζε την καταλληλότητα των δεδομένων ως προς την ανάλυση, ειδικά σε μεθόδους όπως την ανάλυση διαφορικής έκφρασης. Αυτό οφείλεται στο γεγονός ότι η συγκεκριμένη κανονικοποίηση γενικά λειτουργεί σε επίπεδο δείγματος, καθιστώντας τα δείγματα ακατάλληλα για μια μεταξύ τους σύγκριση. Ιδανικά, τα πακέτα λογισμικού ανάλυσης γονιδιακής έκφρασης όπως DESeq (\emph{το οποίο χρησιμοποιήθηκε και σε αυτή την εργασία}) απαιτούν τα δεδομένα σε RAW, δηλαδή ακατέργαστη μορφή, χωρίς κάποια κανονικοποίηση. Δεδομένου των προϋποθέσεων για μια ανάκτηση των αντίστοιχων πληροφοριών, όπως αναφέρθηκε και παραπάνω, η μορφή feature counts φάνηκε ως η πιο κατάλληλη καθώς είναι ότι πιο κοντινό σε ακατέργαστα δεδομένα μεταγραφικής πληροφορίας.
         
-    \section{Συγκρότηση και Συγχόνευση Δεδομένων}
+    \section{Συγκρότηση και Συγχώνευση Δεδομένων}
         \par
             Τα δεδομένα της μελέτης του PPMI περιέχουν ξεχωριστά αρχεία ανά δείγμα. Για την ανάλυση είναι χρήσιμη η διάθεση ενός μοναδικού συνόλου με όλα τα δείγματα, τις τιμές έκφρασης ανά δείγμα αλλά και μέτα-πληροφορίες όπως σε ποια ομάδα, ελέγχου ή νοσούντων, ανήκει ένα δείγμα, το φύλο, η ηλικία κα. για την συγκρότηση ενός τέτοιου συνόλου συγγράφηκε το σενάριο στον κώδικα~\ref{lst:readdatapy} και το σενάριο στον κώδικα~\ref{lst:preparedatapy}. Στο πρώτο συλλέγονται τα αρχεία-δείγματα και καταγράφονται σε ένα CSV\nomenclature{CSV}{Comma Separated Values} αρχείο, ενώ στο 2ο γίνεται ανάγνωση αυτού του αρχείου, επικόλληση των μέτα-δεδομένων ανά δείγμα και εκκαθάριση του συνόλου εφαρμόζοντας φίλτρο σε στήλη η οποία ορίζει αν ένα δείγμα πληροί τα ποιοτικά κριτήρια του πειράματος ή όχι. Σαφώς στο σενάριο γίνεται εκκαθάριση όσων δειγμάτων δεν φέρουν την τιμή "pass" στην αντίστοιχη στήλη.
         \par
@@ -455,7 +456,6 @@
             Με στόχο την λεπτομερή ανάλυση της γονιδιακής έκφρασης για την εξερεύνηση πιθανών λειτουργικών δικτύων, καθιερώθηκε πρωτόκολλο ανάλυσης αποτελούμενο από:
             \begin{enumerate}
                 \item Την ανάλυση κυρίων συνιστωσών PCA\nomenclature{PCA}{Principal Component Analysis}, για την εξερεύνηση των δεδομένων, σύμφωνα με διαφορετικούς παράγοντες που πιθανώς επηρεάζουν τις τιμές έκφρασης.
-                \item Την αποσυνέλιξη (\emph{Deconvolution}) των δειγμάτων ως προς την ανάδειξη μεταγραφικού προϊόντος από κύτταρα του ανοσοποιητικού, καθώς και την χρήση των αποτελεσμάτων της αποσυνέλιξης ως συμμεταβλητές στην διαφορική ανάλυση.
                 \item Την ανάλυση διαφορικής έκφρασης ανά στρώμα, για την ανάδειξη διαφορικά εκφραζόμενων γονιδίων.
                 \item Την εφαρμογή κατάλληλων αλγορίθμων επιλογής χαρακτηριστικών, ως προετοιμασία συνόλων δεδομένων για την εφαρμογή αλγορίθμων επιβλεπομένης μηχανικής μάθησης.
                 \item Την εφαρμογή ευρέως διαδομένων αλγορίθμων μηχανικής μάθησης στους τομείς της βιοπληροφορικής και την εξαγωγή χαρακτηριστικών που κρίθηκαν από τον εκάστοτε αλγόριθμο ως σημαντικά για την κατηγοριοποίηση.
@@ -474,15 +474,25 @@
                 \label{fig:ppmi-proportion-of-genders-absolute-and-per-cohort}
             \end{figure}
         \par
-            Πρέπει να σημειωθεί ότι η αλληλούχιση διενεργήθηκε σε δύο διαφορετικές φάσεις. Αυτό δεν σημαίνει πως η δειγματοληψία ακολούθησε επίσης αυτόν τον διαχωρισμό, έτσι ώστε να προκύψουν για κάθε συμμετέχοντα δέκα δείγματα, ήτοι πέντε επισκέψεις επί δύο φάσεις, αλλά δείγματα από τις πέντε (\emph{ή και λιγότερα}) διαφορετικές επισκέψεις μπορεί να αλληλουχίστηκαν σε διαφορετικές φάσεις. Σαφώς αυτό καθιστά έναν τεχνικό παράγοντα που μπορεί να οδηγήσει σε ανακριβή αποτελέσματα σε αναλύσεις. 
-        \par
-            Στα πλαίσια του χαρακτηρισμού των δεδομένων διενεργήθηκε ανάλυση κυρίων συνιστωσών, ως προς την ανίχνευση τεχνικών παραγόντων που ενέχουν τον κίνδυνο παρεμβολών. Όπως παρουσιάζεται και στην εικόνα \ref{fig:ppmi-pca-pd-ctrl-all-visits-hue-phase}, δεν απεικονίζονται διαφορετικές συστάδες για τις πρώτες πέντε κύριες συνιστώσες, κάτι που σημαίνει πως η μεταβλητότητα που εισάγεται από τον τεχνικό παράγοντα της φάσης αλληλούχισης ενδεχομένως είναι αμελητέα χαμηλή.
+            Πρέπει να σημειωθεί ότι η αλληλούχιση διενεργήθηκε σε δύο διαφορετικές φάσεις. Αυτό δεν σημαίνει πως η δειγματοληψία ακολούθησε επίσης αυτόν τον διαχωρισμό, έτσι ώστε να προκύψουν για κάθε συμμετέχοντα δέκα δείγματα, ήτοι πέντε επισκέψεις επί δύο φάσεις, αλλά δείγματα από τις πέντε (\emph{ή και λιγότερα}) διαφορετικές επισκέψεις μπορεί να αλληλουχίστηκαν σε διαφορετικές φάσεις. Σαφώς αυτό καθιστά έναν τεχνικό παράγοντα που μπορεί να οδηγήσει σε ανακριβή αποτελέσματα σε αναλύσεις. Ειδικά η αλληλούχιση των δειγμάτων της δεύτερης επίσκεψης έχει γίνει αποκλειστικά στη δεύτερη φάση, σύμφωνα με την εικόνα~\ref{fig:ppmi-bars-pd-ctrl-visits-per-phase}. Ένα επίσης ερώτημα μπορεί να απαντηθεί ως προς το αν τα δείγματα όλων των ηλικιακών ομάδων εκπροσωπούνται και στις δύο φάσεις. Με το γράφημα στην εικόνα~\ref{fig:ppmi-bars-pd-ctrl-age_groups-per-phase} η απάντηση μπορεί να δοθεί καταφατικά, όπως επίσης και ότι δεν υπάρχει αξιοσημείωτη ασυμμετρία στην κατανομή των ηλικιακών ομάδων ανά φάση αλληλούχισης.
 
-            \begin{figure}[h]
+            \begin{figure}[ht]
                 \centering
-                \includegraphics[width=0.8\linewidth]{Chapter-2-Section-2.1/ppmi-pca-pd-ctrl-all-visits-hue-phase.png}
-                \caption{PCA σύμφωνα με την φάση αλληλούχισης}
-                \label{fig:ppmi-pca-pd-ctrl-all-visits-hue-phase}
+                \begin{subfigure}[b]{0.48\textwidth}
+                    \centering
+                    \includegraphics[width=\linewidth,height=7.5cm]{Chapter-2-Section-2.1/ppmi-bars-pd-ctrl-visits-per-phase.png}
+                    \caption{Κατανομή δειγμάτων ανά επίσκεψη και φάση αλληλούχισης}
+                    \label{fig:ppmi-bars-pd-ctrl-visits-per-phase}
+                \end{subfigure}
+                \hfill
+                \begin{subfigure}[b]{0.48\textwidth}
+                \centering
+                    \includegraphics[width=\linewidth,height=7.5cm]{Chapter-2-Section-2.1/ppmi-bars-pd-ctrl-age_groups-per-phase.png}
+                    \caption{Κατανομή ηλικιακών ομάδων ανά φάση αλληλούχισης}
+                    \label{fig:ppmi-bars-pd-ctrl-age_groups-per-phase}
+                \end{subfigure}
+                \label{fig:ppmi-visit-phase-sample-distributions}
+                \caption{Οπτικοποίηση δειγμάτων ανά φάση αλληλούχισης}
             \end{figure}
         \newpage
 
@@ -503,8 +513,10 @@
                     \centering
                     \includegraphics[width=\linewidth,height=7cm]{Chapter-2-Section-2.1/ppmi-pca-pd-ctrl-all-visits-hue_gender.png}
                     \caption{PCA σύμφωνα με τo φύλο}
-                    \label{fig:ppmi-pca-pd-ctrl-all-visits-hue_gender}                    
+                    \label{fig:ppmi-pca-pd-ctrl-all-visits-hue_gender}    
                 \end{subfigure}
+                \label{fig:ppmi-pca-scatterplot}
+                \caption{Αποτελέσματα PCA}
             \end{figure}
 
             \begin{table}[ht]
@@ -519,7 +531,60 @@
                 \end{tabular}
                 \label{tab:pca}
             \end{table}
-
+            \newpage
+            \par
+                Παρακάτω απεικονίζεται το αποτέλεσμα της PCA σύμφωνα με τη φάση αλληλούχισης. Εντός των πρώτων πέντε κυρίων συνιστωσών δεν παρατηρείται ομαδοποίηση και μαζί με αυτό προκύπτει και η διαβεβαίωση πως δεν εισάγεται τεχνικός θόρυβος από τη φάση αλληλούχισης.
+                \begin{figure}[H]
+                    \centering
+                    \includegraphics[width=\textwidth]{Chapter-2-Section-2.1/ppmi-pca-pd-ctrl-all-visits-hue-phase.png}
+                    \caption{PCA σύμφωνα με τη φάση αλληλούχισης}
+                    \label{fig:ppmi-pca-pd-ctrl-all-visits-hue-phase}
+                \end{figure}
+    \section{Ανάλυση διαφορικής γονιδιακής έκφρασης}
+        \par
+            Η ανάλυση διαφορικής έκφρασης (\emph{DGEA\nomenclature{DGEA}{Differential Gene Expression Analysis}}) διενεργήθηκε μετά από στρωματοποίηση των δειγμάτων σύμφωνα με το φύλο και την ηλικιακή ομάδα με τη χρήση του πακέτου λογισμικού της R DESeq2 (\emph{κώδικας~\ref{lst:mainr}}) και αντίστοιχη οπτικοποίηση με χρήση σεναρίου στην γλώσσα Python (\emph{κώδικας~\ref{lst:processdegconsolidatedvisitspy}}). Η επίσκεψη της κάθε δειγματοληψίας συμπεριλήφθηκε ως συμμεταβλητή και θεωρήθηκε ως τεχνικός παράγοντας, χωρίς να ερευνηθεί αν έχει βιολογικό χαρακτήρα ως προς την πρόοδο της νόσου. Ως όριο για την έκφραση $|log_2FoldChange|$ τέθηκε η τιμή $>0,5$ ενώ για την τιμή της $padj<0,05$.
+        \subsection{Διαφορική έκφραση γονιδίων σε γυναίκες}
+         \par
+            Το πλήθος των στατιστικά σημαντικών εκφραζόμενων γονιδίων ποικίλει ανά ηλικιακή ομάδα. Στη σειρά διαγραμμάτων της εικόνας~\ref{fig:volcano_plot_consoVisits_Female} διακρίνονται περισσότερα γονίδια στατιστικής σημασίας στην ηλικιακή ομάδα 30-50 έναντι της ομάδας 50-70 ετών. Ενδεχομένως η νόσος να διαφοροποιείται σε γονιδιακό επίπεδο σε περιπτώσεις όπου η νόσος εκδηλώνεται σε μικρότερες ηλικίες. Σε ηλικίες άνω των 70 ετών το πλήθος των διαφορικά εκφραζόμενων γονιδίων στατιστικής σημασίας αυξάνεται σημαντικά, κάτι που μπορεί να παραπέμπει και στην πρόοδο της νόσου με αυξανόμενη ηλικία.
+            \begin{figure}[h]
+                \centering
+                \includegraphics[width=\textwidth,height=4cm]{Chapter-3/volcano_plot_consoVisits_Female.png}
+                \caption{Διαγράμματα Ηφαιστείου ανά ηλικιακή ομάδα γυναικών}
+                \label{fig:volcano_plot_consoVisits_Female}
+            \end{figure}
+        \newpage
+        \par
+            Όσον αφορά το πλήθος των υπέρ-έναντι των υπό-εκφραζόμενων γονιδίων, ισχύει σύμφωνα με την παρακάτω οπτικοποίηση στην εικόνα~\ref{fig:barplot_plot_consoVisits_Female}, ότι υπάρχουν περισσότερα υπέρ-εκφραζόμενα γονίδια σε όλες τις ηλικιακές ομάδες υπό παρατήρηση.
+            \begin{figure}[h]
+                \centering
+                \includegraphics[width=\textwidth,height=4cm]{Chapter-3/barplot_plot_consoVisits_Female.png}
+                \caption{Πλήθος στατιστικά σημαντικών διαφορικά εκφραζόμενων γονιδίων}
+                \label{fig:barplot_plot_consoVisits_Female}
+            \end{figure}
+        \subsection{Διαφορική έκφραση γονιδίων σε άνδρες}
+        \par
+            Συνολικά η διαφορική έκφραση γονιδίων στους άνδρες σε κάθε ηλικιακή ομάδα διαφέρει από τις εκφράσεις των γυναικών. Χαρακτηριστική είναι η παρουσία περισσότερων υπέρ-εκφραζόμενων γονιδίων έναντι ελάχιστων υπό-εκφραζόμενων στην ηλικιακή ομάδα των 50-70, ενώ στις υπόλοιπες περιπτώσεις ο αριθμός των υπό-εκφραζόμενων δείχνει να είναι περίπου διπλάσιος από τους υπέρ-εκφραζόμενους.
+            \begin{figure}[h]
+                \centering
+                \includegraphics[width=\textwidth,height=4cm]{Chapter-3/volcano_plot_consoVisits_Male.png}
+                \caption{Διαγράμματα Ηφαιστείου ανά ηλικιακή ομάδα ανδρών}
+                \label{fig:volcano_plot_consoVisits_Male}
+            \end{figure}
+        \newpage
+        \par
+            Τα πρότυπα έκφρασης δείχνουν σημαντική διαφορά σε σχέση με τις αντίστοιχες ηλικιακές ομάδες των γυναικών.
+            \begin{figure}[h]
+                \centering
+                \includegraphics[width=\textwidth,height=4cm]{Chapter-3/barplot_plot_consoVisits_Male.png}
+                \caption{Πλήθος στατιστικά σημαντικών διαφορικά εκφραζόμενων γονιδίων}
+                \label{fig:barplot_plot_consoVisits_Male}
+            \end{figure}
+        \subsection{Ανάλυση εμπλουτισμού}
+        \par 
+            Μέσω της ανάλυσης εμπλουτισμού (\emph{GSEA}) παρέχεται η διασταύρωση ενός συνόλου γονιδίων, όπως αυτά που αναδείχθηκαν ως διαφορικά εκφραζόμενα και στατιστικά σημαντικά στην προηγούμενη ενότητα, με δεδομένα σχολιασμού από βάσεις δεδομένων βιολογικών μονοπατιών, κυτταρικών λειτουργιών, φαινοτύπων κ.α.
+        \par
+            Αντίστοιχα με την στρωματοποίηση, όπως αυτή πραγματοποιήθηκε στην ανάλυση διαφορικής έκφρασης γονιδίων, διεξήχθη ανάλυση εμπλουτισμού με τη χρήση των DEG\nomenclature{DEG}{Differentially Expressed Genes} ανά φύλο και ηλικιακή ομάδα. Στατιστικά σημαντικά αποτελέσματα προέκυψαν, μετά από εκτέλεση του κώδικα~\ref{lst:gseastratifiedbatchconsolidatedvisits}, για όλες τις ηλικιακές ομάδες ανά φύλο πλην ανδρών ηλικίας 50-70 ετών.
+        
 
     % \subsection{First Subsection}
     % \subsubsection{First Subsubsection}
@@ -717,6 +782,194 @@
             ppmi_adata.varm['symbol_ensembl_mapping'] = ensembl_symbol_mapping
         
             ppmi_adata.write_h5ad("/Users/kpax/Documents/aep/study/MSC/lab/PPMI_Project_133_RNASeq/ppmi_adata.h5ad")
+        
+        if __name__ == '__main__':
+            main()
+    \end{lstlisting}
+    \begin{lstlisting}[language=R,caption={Main.R: Διαφορική ανάλυση μέσω πακέτου R DESeq2},label=lst:mainr]
+        library(DESeq2)
+        library(tibble)
+        library(tidyverse)
+        
+        setwd('/Users/kpax/Documents/aep/study/MSC/lab/PPMI_Project_133_RNASeq')
+        
+        metadata <- read.csv("metadata.csv", row.names=1)
+        counts <-  read.csv("counts_matrix.csv", row.names=1)
+        
+        design <- "Visit + Diagnosis"
+        
+        strata <- list(
+          list(Gender="Male", Age_Group="30-50", Diagnosis=c("PD", "Control"), Design=design),
+          list(Gender="Male", Age_Group="50-70", Diagnosis=c("PD", "Control"), Design=design),
+          list(Gender="Male", Age_Group="70-80", Diagnosis=c("PD", "Control"), Design=design),
+          list(Gender="Male", Age_Group=">80", Diagnosis=c("PD", "Control"), Design=design),
+          list(Gender="Female", Age_Group="30-50", Diagnosis=c("PD", "Control"), Design=design),
+          list(Gender="Female", Age_Group="50-70", Diagnosis=c("PD", "Control"), Design=design),
+          list(Gender="Female", Age_Group="70-80", Diagnosis=c("PD", "Control"), Design=design),
+          list(Gender="Female", Age_Group=">80", Diagnosis=c("PD", "Control"), Design=design)
+        )
+        
+        results_list <- lapply(strata, function(stratum) {
+          print(paste("design=",stratum$Design))
+          meta_stratum <- metadata %>% filter(Gender == stratum$Gender,
+                                              Age_Group == stratum$Age_Group,
+                                              # Visit == stratum$Visit,
+                                              Diagnosis %in% stratum$Diagnosis)
+          counts_stratum <- counts[rownames(meta_stratum), ]
+          dds <- DESeqDataSetFromMatrix(
+            t(counts_stratum),
+            meta_stratum,
+            design = formula(paste("~ ", stratum$Design))
+          )
+          dds <- DESeq(dds)
+          (dds)
+        })
+        
+        
+        names(results_list) <- sapply(strata, function(s) paste(s$Gender, s$Age_Group, sep="_"))
+        for (i in seq_along(results_list)) {
+          stratum_name <- ifelse(is.null(names(results_list)),
+                                 paste0("Stratum_", i),
+                                 names(results_list)[i])
+          res <- results(results_list[[i]], contrast=c("Diagnosis", "PD", "Control")) %>%
+            as.data.frame() %>%
+            rownames_to_column("Gene") %>%
+            arrange(padj, desc(abs(log2FoldChange)))
+          filename <- file.path("./data/deg_consolidated_visits", paste0("DEGs_stratified_consoVisits_", stratum_name, ".csv"))
+          write.csv(res, file=filename, row.names=FALSE)
+        }
+    \end{lstlisting}
+    \begin{lstlisting}[language=Python,caption={process\_deg\_consolidated\_visits.py: Κατασκευή γραφημάτων διαφορικά εκφραζομένων γονιδίων}, label=lst:processdegconsolidatedvisitspy]
+        import pandas as pd
+        import matplotlib.pyplot as plt
+        import numpy as np
+        
+        def visualize_amounts_of_up_and_down_regulated_genes(dfs):
+            fig, axes = plt.subplots(1, 4, figsize=(20, 5))
+            titles = list(dfs.keys())
+        
+            for ax, df, title in zip(axes, list(dfs.values()), titles):
+                count_up = ((df['log2FoldChange'] > 0.5) & (df['padj'] < 0.05)).sum()
+                count_down = ((df['log2FoldChange'] < -0.5) & (df['padj'] < 0.05)).sum()
+                ax.bar(['Upregulated > 0.5', 'Downregulated < -0.5'], [count_up, count_down], color=['red', 'blue'])
+                ax.set_title(title)
+                ax.set_ylabel('Gene Count')
+                ax.set_xlabel('Expression')
+        
+            plt.tight_layout()
+            return plt
+        
+        def visualize_volcano_plots(dfs):
+            fig, axes = plt.subplots(1, 4, figsize=(25, 5), sharey=False)
+            titles = list(dfs.keys())
+        
+            for ax, df, title in zip(axes, list(dfs.values()), titles):
+                significant = (df['log2FoldChange'].abs() > 0.5) & (df['padj'] < 0.05)
+                ax.scatter(df['log2FoldChange'], -np.log10(df['padj']), color='gray', s=10, alpha=0.6, label='Non-significant')
+                ax.scatter(df.loc[significant, 'log2FoldChange'],
+                           -np.log10(df.loc[significant, 'padj']),
+                           color='red',
+                           s=10,
+                           label='Significant')
+                ax.axvline(x=0.5, color='blue', linestyle='--', linewidth=0.8)
+                ax.axvline(x=-0.5, color='blue', linestyle='--', linewidth=0.8)
+                ax.set_title(title)
+                ax.set_xlabel('log$_2$ Fold Change')
+                ax.set_ylabel('-log$_{10}$(p-value)')
+                ax.legend(loc='upper right', fontsize='small')
+        
+            plt.tight_layout()
+            return plt
+        
+        def main():
+            gender = ["Male", "Female"]
+            age_groups = ["30-50", "50-70", "70-80", ">80"]
+        
+            deg_data_path = "/Users/kpax/Documents/aep/study/MSC/lab/PPMI_Project_133_RNASeq/data/deg_consolidated_visits/"
+            deg_results_path = "/Users/kpax/Documents/aep/study/MSC/lab/PPMI_Project_133_RNASeq/data/deg_consolidated_visits/results"
+        
+            dfs = {};
+            dfs_filtered = {};
+            for gender in gender:
+                for age_group in age_groups:
+                    df = pd.read_csv(deg_data_path + f"DEGs_stratified_consoVisits_{gender}_{age_group}.csv")
+                    df_filtered = df[(df['log2FoldChange'].abs() > 0.5) & (df['padj'] < 0.05)]
+                    dfs_filtered[age_group] = df_filtered
+                    dfs[age_group] = df
+        
+                volcano_plot = visualize_volcano_plots(dfs)
+                volcano_plot.savefig(deg_results_path + f"/volcano_plot_consoVisits_{gender}.png")
+                bar_plot = visualize_amounts_of_up_and_down_regulated_genes(dfs)
+                bar_plot.savefig(deg_results_path + f"/barplot_plot_consoVisits_{gender}.png")
+        
+        
+        if __name__ == '__main__':
+            main()
+        
+    \end{lstlisting}
+    \begin{lstlisting}[language=Python,caption={gsea\_stratified\_batch\_consolidated\_visits.py: Ανάλυση εμπλουτισμού με χρήση της βιβλιοθήκης gseapy σε Python}, label=lst:gseastratifiedbatchconsolidatedvisits]
+    from typing import Final
+        import anndata as ad
+        import pandas as pd
+        import numpy as np
+        import gseapy as gp
+        
+        DEG_DATA_PATH: Final = "/Users/kpax/Documents/aep/study/MSC/lab/PPMI_Project_133_RNASeq/data/deg_consolidated_visits"
+        GSEA_PATH: Final = "/Users/kpax/Documents/aep/study/MSC/lab/PPMI_Project_133_RNASeq/data/gsea"
+        
+        
+        def main():
+            ppmi_ad = ad.read_h5ad("/Users/kpax/Documents/aep/study/MSC/lab/PPMI_Project_133_RNASeq/ppmi_adata.h5ad")
+            age_groups = ['30-50', '50-70', '70-80', '>80']
+            genders = ['Male', 'Female']
+            gene_sets = ['MSigDB_Hallmark_2020',
+                         'KEGG_2021_Human',
+                         'WikiPathways_2024_Human',
+                         'Human_Phenotype_Ontology',
+                         'GO_Biological_Process_2023',
+                         'GO_Molecular_Function_2023',
+                         'GO_Cellular_Component_2023',
+                         'SynGO_2024',
+                         'OMIM_Disease',
+                         'ARCHS4_TFs_Coexp',
+                         'ChEA_2013',
+                         'ChEA_2015',
+                         'ChEA_2016',
+                         'ChEA_2022',
+                         'ENCODE_TF_ChIP-seq_2014',
+                         'ENCODE_TF_ChIP-seq_2015',
+                         'ENCODE_and_ChEA_Consensus_TFs_from_ChIP-X',
+                         'Enrichr_Submissions_TF-Gene_Coocurrence',
+                         'TF-LOF_Expression_from_GEO',
+                         'TF_Perturbations_Followed_by_Expression',
+                         'TRRUST_Transcription_Factors_2019']
+        
+            for gender in genders:
+                for age_group in age_groups:
+                    print(f"GSEA running => Age Group: {age_group}, Gender: {gender}")
+                    mask = ((ppmi_ad.obs['Age_Group'] == age_group) &
+                            (ppmi_ad.obs['Gender'] == gender) &
+                            (ppmi_ad.obs['Diagnosis'].isin(['PD', 'Control'])))
+        
+                    ppmi_ad_subset = ppmi_ad[mask]
+                    symbol_ensembl_mapping = ppmi_ad_subset.varm['symbol_ensembl_mapping']
+                    deg_data = pd.read_csv(f"{DEG_DATA_PATH}/DEGs_stratified_consoVisits_{gender}_{age_group}.csv", index_col=0)
+                    deg_sign = deg_data[
+                        (np.abs(deg_data['log2FoldChange']) > 0.5) & (deg_data['padj'] < 0.05)]
+                    deg_sign = deg_sign.merge(symbol_ensembl_mapping, left_index=True, right_index=True)
+                    ranked_genes = deg_sign.set_index('gene_symbol')['stat'].sort_values(ascending=False)
+                    ranked_genes = ranked_genes[~ranked_genes.isna()]
+                    ranked_genes = ranked_genes.sort_values(ascending=False, key=abs)
+                    if ranked_genes.empty:
+                        continue
+        
+                    enr = gp.enrichr(gene_list=ranked_genes.index.tolist(),
+                                     gene_sets=gene_sets,
+                                     organism='human',
+                                     verbose=True)
+                    enr_results_sorted = enr.results.sort_values(by='Adjusted P-value', ascending=True)
+                    enr_results_sorted.to_csv(f"{GSEA_PATH}/enr_results_sorted_consoVisits_{gender}_{age_group}.csv")
+        
         
         if __name__ == '__main__':
             main()
