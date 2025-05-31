@@ -41,6 +41,8 @@
 \usepackage{xcolor}
 \addbibresource{references.bib}
 \usepackage{nomencl}
+\usepackage[table]{xcolor}
+\usepackage{multirow}
 \captionsetup{tablename=Πίνακας}
 \renewcommand\theadfont{\bfseries}
 \renewcommand{\arraystretch}{1.5}
@@ -391,7 +393,7 @@
     \addcontentsline{toc}{chapter}{Abstract}
         \selectlanguage{english}
             \par
-                This thesis handles the analysis of trancriptome data from RNA sequencing on whole-blood samples and the mapping of functional gene networks in Parkinson's disease. It aims at the application of suitable bioinformatics toolsets in order to recognise differences in gene expressions between particular data of the disease and in parallel to search for target genes with possible involvement in the pathophysiology.
+                This thesis handles the analysis of transcriptome data from RNA sequencing on whole-blood samples and the mapping of functional gene networks in Parkinson's disease. It aims at the application of suitable bioinformatics toolsets in order to recognise differences in gene expressions between particular data of the disease and in parallel to search for target genes with possible involvement in the pathophysiology.
             \par
                 Parkinson's disease on the surface is defined by intense movement distress with a characteristic tremor on the limbs which is assumed to be due to the loss of dopaminergic neurons in the substantia nigra of the brain. The loss of functional neurons leads to progressive reduction of the neurotransmitter Dopamine and effectively happens because of accumulation of α-Synuclein to Lewy bodies in the inside of the dopaminergic cells (\emph{\cite{Balestrino2020ParkinsonDisease}}).
             \par
@@ -542,7 +544,17 @@
                 \end{figure}
     \section{Ανάλυση διαφορικής γονιδιακής έκφρασης}
         \par
-            Η ανάλυση διαφορικής έκφρασης (\emph{DGEA\nomenclature{DGEA}{Differential Gene Expression Analysis}}) διενεργήθηκε μετά από στρωματοποίηση των δειγμάτων σύμφωνα με το φύλο και την ηλικιακή ομάδα με τη χρήση του πακέτου λογισμικού της R DESeq2 (\emph{κώδικας~\ref{lst:mainr}}) και αντίστοιχη οπτικοποίηση με χρήση σεναρίου στην γλώσσα Python (\emph{κώδικας~\ref{lst:processdegconsolidatedvisitspy}}). Η επίσκεψη της κάθε δειγματοληψίας συμπεριλήφθηκε ως συμμεταβλητή και θεωρήθηκε ως τεχνικός παράγοντας, χωρίς να ερευνηθεί αν έχει βιολογικό χαρακτήρα ως προς την πρόοδο της νόσου. Ως όριο για την έκφραση $|log_2FoldChange|$ τέθηκε η τιμή $>0,5$ ενώ για την τιμή της $padj<0,05$.
+            Η ανάλυση διαφορικής έκφρασης (\emph{DGEA\nomenclature{DGEA}{Differential Gene Expression Analysis}}) διενεργήθηκε μετά από στρωματοποίηση των δειγμάτων σύμφωνα με το φύλο και την ηλικιακή ομάδα με τη χρήση του πακέτου λογισμικού της R, DESeq2 (\emph{\cite{Love2014ModeratedDESeq2}}) (\emph{κώδικας~\ref{lst:mainr}}) και αντίστοιχη οπτικοποίηση με χρήση σεναρίου στην γλώσσα Python (\emph{κώδικας~\ref{lst:processdegconsolidatedvisitspy}}). Η επίσκεψη της κάθε δειγματοληψίας συμπεριλήφθηκε ως συμμεταβλητή και θεωρήθηκε ως τεχνικός παράγοντας, χωρίς να ερευνηθεί αν έχει βιολογικό χαρακτήρα ως προς την πρόοδο της νόσου. Ως όριο για την έκφραση $|log_2FoldChange|$ τέθηκε η τιμή $>0,5$ ενώ για την τιμή της $padj<0,05$.
+        \par
+            Το αντίστοιχο τμήμα της διαδικασίας ανάλυσης (\emph{Pipeline}) παρουσιάζεται στην εικόνα~\ref{fig:msci-big-pic-DEGs-blocks}. Το κομμάτι αυτό κατακερματίζει το σύνολο δεδομένων σύμφωνα με το φύλο και την ηλικιακή ομάδα των συμμετεχόντων σε υποσύνολα, όπου για κάθε υποσύνολο διεξάγεται η διαφορική ανάλυση μέσω DESeq2. Πέραν της διάγνωσης, συμπεριλήφθηκε και η παρατήρηση των επισκέψεων δειγματοληψίας (\emph{Visit}), καθώς καθιστά πηγή μεταβλητότητας η οποία πρέπει να ληφθεί υπόψη ως τεχνικός παράγοντας στην στατιστική ανάλυση (\emph{\cite{Love2016DifferentialPackage}}).
+        \par
+            Τα αποτελέσματα περιέχουν τα διαφορικά εκφραζόμενα και καταγράφονται σε μορφή CSV σε διαφορετικά αρχεία για περαιτέρω ανάλυση.
+            \begin{figure}[h]
+                \centering
+                \includegraphics[width=0.7\textwidth]{Chapter-3/msci-big-pic-DEGs-blocks.png}
+                \caption{Pipeline για την ανάλυση διαφορικής έκφρασης με εξαγωγή αποτελεσμάτων σε αρχεία CSV}
+                \label{fig:msci-big-pic-DEGs-blocks}
+            \end{figure}
         \subsection{Διαφορική έκφραση γονιδίων σε γυναίκες}
          \par
             Το πλήθος των στατιστικά σημαντικών εκφραζόμενων γονιδίων ποικίλει ανά ηλικιακή ομάδα. Στη σειρά διαγραμμάτων της εικόνας~\ref{fig:volcano_plot_consoVisits_Female} διακρίνονται περισσότερα γονίδια στατιστικής σημασίας στην ηλικιακή ομάδα 30-50 έναντι της ομάδας 50-70 ετών. Ενδεχομένως η νόσος να διαφοροποιείται σε γονιδιακό επίπεδο σε περιπτώσεις όπου η νόσος εκδηλώνεται σε μικρότερες ηλικίες. Σε ηλικίες άνω των 70 ετών το πλήθος των διαφορικά εκφραζόμενων γονιδίων στατιστικής σημασίας αυξάνεται σημαντικά, κάτι που μπορεί να παραπέμπει και στην πρόοδο της νόσου με αυξανόμενη ηλικία. Όσον αφορά το πλήθος των υπέρ-έναντι των υπό-εκφραζόμενων γονιδίων, ισχύει σύμφωνα με την παρακάτω οπτικοποίηση στην εικόνα~\ref{fig:barplot_plot_consoVisits_Female}, ότι υπάρχουν περισσότερα υπέρ-εκφραζόμενα γονίδια σε όλες τις ηλικιακές ομάδες υπό παρατήρηση.
@@ -555,13 +567,13 @@
             \begin{figure}[H]
                 \centering
                 \includegraphics[width=\textwidth,height=4cm]{Chapter-3/barplot_plot_consoVisits_Female.png}
-                \caption{Πλήθος στατιστικά σημαντικών διαφορικά εκφραζόμενων γονιδίων}
+                \caption{Πλήθος στατιστικά σημαντικών διαφορικά εκφραζόμενων γονιδίων - Γυναίκες}
                 \label{fig:barplot_plot_consoVisits_Female}
             \end{figure}
-            \newpage
+
         \subsection{Διαφορική έκφραση γονιδίων σε άνδρες}
         \par
-            Συνολικά η διαφορική έκφραση γονιδίων στους άνδρες σε κάθε ηλικιακή ομάδα διαφέρει από τις εκφράσεις των γυναικών. Χαρακτηριστική είναι η παρουσία περισσότερων υπέρ-εκφραζόμενων γονιδίων έναντι ελάχιστων υπό-εκφραζόμενων στην ηλικιακή ομάδα των 50-70, ενώ στις υπόλοιπες περιπτώσεις ο αριθμός των υπό-εκφραζόμενων δείχνει να είναι περίπου διπλάσιος των υπέρ-εκφραζόμενων.
+            Συνολικά η διαφορική έκφραση γονιδίων στους άνδρες σε κάθε ηλικιακή ομάδα διαφέρει από τις εκφράσεις των γυναικών. Χαρακτηριστική είναι η παρουσία περισσότερων υπέρ-εκφραζόμενων γονιδίων έναντι ελάχιστων υπό-εκφραζόμενων στην ηλικιακή ομάδα των 50-70, ενώ στις υπόλοιπες περιπτώσεις ο αριθμός των υπό-εκφραζόμενων δείχνει να είναι περίπου διπλάσιος από των υπέρ-εκφραζόμενων.
             \begin{figure}[h]
                 \centering
                 \includegraphics[width=\textwidth,height=4cm]{Chapter-3/volcano_plot_consoVisits_Male.png}
@@ -571,9 +583,42 @@
             \begin{figure}[H]
                 \centering
                 \includegraphics[width=\textwidth,height=4cm]{Chapter-3/barplot_plot_consoVisits_Male.png}
-                \caption{Πλήθος στατιστικά σημαντικών διαφορικά εκφραζόμενων γονιδίων}
+                \caption{Πλήθος στατιστικά σημαντικών διαφορικά εκφραζόμενων γονιδίων - Άνδρες}
                 \label{fig:barplot_plot_consoVisits_Male}
             \end{figure}
+        \subsection{Σύνοψη της ανάλυσης διαφορικής έκφρασης}
+            \par
+                Τα αποτελέσματα ανά φύλο και ηλικιακή ομάδα διαφέρουν σε αριθμούς υπό- και υπέρ-εκφραζόμενων γονιδίων. Μια σύντομη σύνοψη των πρώτων έξι διαφορικά εκφραζόμενων γονιδίων παρουσιάζεται στον πίνακα~\ref{tab:top-6-degs-strata}. Πρόκειται για τα γονίδια που έχουν τις χαμηλότερες τιμές $padj$ καθώς και τις υψηλότερες απόλυτες τιμές $log_2FoldChange$.
+                \begin{table}[ht]
+                    \centering
+                    \caption[Ενδεικτική επιλογή έξι διαφορικά εκφραζόμενων γονιδίων] {Ενδεικτική επιλογή έξι διαφορικά εκφραζόμενων γονιδίων με υψηλότερη απόλυτη τιμή έκφρασης και υψηλή στατιστική σημαντικότητα. Υπέρ-εκφραζόμενα γονίδια παρουσιάζονται με κόκκινο φόντο, υπό-εκφραζόμενα με μπλε. Κοινά γονίδια παρουσιάζονται \textbf{έντονα} και \underline{υπογραμμισμένα}}
+                    \small
+                    \setlength{\tabcolsep}{5pt}
+                    \renewcommand{\arraystretch}{1.4}
+                    \begin{tabular}{@{}>{\raggedright}p{1.3cm}cccc@{}}
+                        \toprule
+                        \textbf{Φύλο} & \textbf{30-50} & \textbf{50-70} & \textbf{70-80} & \textbf{>80} \\
+                        \midrule
+                        \multirow{6}{*}{'Ανδρες}
+                        & \cellcolor{blue!20}\textbf{\underline{RNU671-P}} & \cellcolor{red!20}NFYAP1 & \cellcolor{blue!20}\textbf{\underline{RNU1-67P}} & \cellcolor{blue!20}LINC02506 \\
+                        & \cellcolor{blue!20}CNTNAP3P2 & \cellcolor{red!20}ENSG00000270962 & \cellcolor{blue!20}NECTIN2 & \cellcolor{blue!20}ENSG00000276345 \\
+                        & \cellcolor{blue!20}RNU1-83P & \cellcolor{red!20}LINC00355 & \cellcolor{red!20}\textbf{\underline{ENSG00000259385}} & \cellcolor{blue!20}DEFA3 \\
+                        & \cellcolor{blue!20}TUSC3 & \cellcolor{red!20}TRIM64 & \cellcolor{red!20}LRRC37A2 & \cellcolor{blue!20}\textbf{\underline{ENSG00000223779}} \\
+                        & \cellcolor{blue!20}LINC02470 & \cellcolor{red!20}ANKRD33BP9 & \cellcolor{blue!20}IFI44L & \cellcolor{red!20}\textbf{\underline{HLA-DQA2}} \\
+                        & \cellcolor{blue!20}TUBB2B & \cellcolor{red!20}LCEP2 & \cellcolor{blue!20}CYP4F29P & \cellcolor{blue!20}PAX8-AS1 \\
+                        \midrule
+                        \multirow{6}{*}{Γυναίκες}
+                        & \cellcolor{red!20}RNVU1-7 & \cellcolor{blue!20}\textbf{\underline{RNU1-67P}} & \cellcolor{blue!20}DCLRE1CP1 & \cellcolor{red!20}REXO1L10P \\
+                        & \cellcolor{red!20}CTAG2 & \cellcolor{red!20}ADAD1P1 & \cellcolor{blue!20}LINC02899 & \cellcolor{red!20}MIR4289 \\
+                        & \cellcolor{red!20}ADGRG7 & \cellcolor{blue!20}RAP1GAP & \cellcolor{blue!20}\textbf{\underline{HLA-DQA2}} & \cellcolor{red!20}ENSG00000241573 \\
+                        & \cellcolor{red!20}MRPS35-DT & \cellcolor{blue!20}\textbf{\underline{ENSG00000259385}} & \cellcolor{red!20}C4BPA & \cellcolor{red!20}IQCJ-SCHIP1-AS1 \\
+                        & \cellcolor{red!20}ENSG00000275649 & \cellcolor{blue!20}ENSG00000265218 & \cellcolor{blue!20}CEACAMP3 & \cellcolor{red!20}ENSG00000238140 \\
+                        & \cellcolor{red!20}\textbf{\underline{ENSG00000223779}} & \cellcolor{blue!20}CTXN2-AS1 & \cellcolor{blue!20}AGAP12P & \cellcolor{red!20}ENSG00000236046 \\
+                        
+                        \bottomrule
+                    \end{tabular}
+                    \label{tab:top-6-degs-strata}
+                \end{table}
         \newpage
     \section{Κατηγοριοποίηση δειγμάτων μέσω Μηχανικής Μάθησης}
         \par
