@@ -619,6 +619,68 @@
                     \end{tabular}
                     \label{tab:top-6-degs-strata}
                 \end{table}
+                \par
+                    Στην εικόνα~\ref{fig:common-genes-across-genders-per-age-group} παρατίθενται στα εξής διαγράμματα κοινά γονίδια μεταξύ των φύλων ανά ηλικιακή ομάδα, στατιστικά σημαντικά και με τιμές έκφρασης $|log_2FoldChange| > 0,5$. Από τα κοινά γονίδια υπάρχουν μόνο λίγα που παρουσιάζουν ίδιο πρότυπο έκφρασης, δηλαδή είτε και στα δυο φύλα να υπέρ- ή να υπό-εκφράζονται.
+                    \begin{figure}[ht]
+                        \centering
+                        \begin{subfigure}[b]{0.48\textwidth}
+                            \includegraphics[width=\textwidth]{Chapter-3/bubbleplot_combined_30-50.png}
+                            \caption{Κοινά διαφορικά εκφραζόμενα γονίδια ηλικίας 30-50}
+                            \label{fig:bubbleplot_combined_30-50}
+                        \end{subfigure}
+                        \hfill % Add horizontal fill
+                        \begin{subfigure}[b]{0.48\textwidth}
+                            \includegraphics[width=\textwidth]{Chapter-3/bubbleplot_combined_50-70.png}
+                            \caption{Κοινά διαφορικά εκφραζόμενα γονίδια ηλικίας 50-70}
+                            \label{fig:bubbleplot_combined_50-70}
+                        \end{subfigure}
+                        
+                        \vspace{0.5cm} % Vertical spacing between rows
+                        
+                        \begin{subfigure}[b]{0.48\textwidth}
+                            \includegraphics[width=\textwidth]{Chapter-3/bubbleplot_combined_70-80.png}
+                            \caption{Κοινά διαφορικά εκφραζόμενα γονίδια ηλικίας 70-80}
+                            \label{fig:bubbleplot_combined_70-80}
+                        \end{subfigure}
+                        \hfill
+                        \begin{subfigure}[b]{0.48\textwidth}
+                            \includegraphics[width=\textwidth]{Chapter-3/bubbleplot_combined_>80.png}
+                            \caption{Κοινά διαφορικά εκφραζόμενα γονίδια ηλικίας >80}
+                            \label{fig:bubbleplot_combined_>80}
+                        \end{subfigure}
+                        
+                        \caption{Κοινά διαφορικά εκφραζόμενα γονίδια μεταξύ ανδρών και γυναικών}
+                        \label{fig:common-genes-across-genders-per-age-group}
+                    \end{figure}
+                \newpage
+                \par    
+                    Με μια σύντομη αναζήτηση στη βάση Gene4PD\footnote{http://genemed.tech/gene4pd}(\emph{\cite{Li2021Gene4PD:Disease}}), μιας βάσης δεδομένων στο διαδίκτυο για την αναζήτηση γενετικών πληροφοριών σχετικά με τη νόσο του Πάρκινσον, ανέκυψαν αποτελέσματα τα οποία συνοψίζονται στον πίνακα~\ref{tab:gene4pd-known-genes}.
+
+                    \begin{table}[ht]
+                        \centering
+                        \small
+                        % \setlength{\tabcolsep}{5pt}
+                        % \renewcommand{\arraystretch}{1.4}
+                        \begin{tabular}{cc}
+                            \textbf{Ηλικιακή ομάδα} & \textbf{Γονίδιο} \\
+                            \midrule
+                             \multirow{2}{*}{30-50} & IF27\tablefootnote{http://genemed.tech/gene4pd/geneDetail/main?gene\_symbol=IFI27} \\
+                             & MYOM2\tablefootnote{http://genemed.tech/gene4pd/geneDetail/main?gene\_symbol=MYOM2} \\
+                             \midrule
+                             50-70 & - \\
+                             \midrule
+                             \multirow{5}{*}{70-80} & RPL39\tablefootnote{http://genemed.tech/gene4pd/geneDetail/main?gene\_symbol=RPL39} \\
+                             & NECTIN2\tablefootnote{http://genemed.tech/gene4pd/geneDetail/main?gene\_symbol=NECTIN2} \\
+                             & OLFM1\tablefootnote{http://genemed.tech/gene4pd/geneDetail/main?gene\_symbol=OLFM1} \\
+                             & CMBL\tablefootnote{http://genemed.tech/gene4pd/geneDetail/main?gene\_symbol=CMBL} \\
+                             & SFRP1\tablefootnote{http://genemed.tech/gene4pd/geneDetail/main?gene\_symbol=SFRP1} \\
+                             \midrule
+                             \multirow{2}{*}{>80} & TXK\tablefootnote{http://genemed.tech/gene4pd/geneDetail/main?gene\_symbol=TXK} \\
+                             & NECTIN2 \\
+                        \end{tabular}
+                        \caption{Γονίδια σχετικά με την νόσο του Πάρκινσον σύμφωνα με Gene4PD}
+                        \label{tab:gene4pd-known-genes}
+                    \end{table}                    
         \newpage
     \section{Κατηγοριοποίηση δειγμάτων μέσω Μηχανικής Μάθησης}
         \par
@@ -636,6 +698,8 @@
                 \caption[Απεικόνιση ανισορροπίας μεταξύ των ομάδων της μελέτης] {Στις ομάδες ανδρών 30-50, 50-70 και 70-80 παρατηρείται ανισορροπία κατά περίπου το διπλάσιο της ομάδας ελέγχου. Στις ομάδες γυναικών 50-70 επίσης, ενώ στην ηλικιακή ομάδα 70-80 περίπου το τριπλάσιο. Η ομάδα γυναικών στις ηλικίες άνω των 80 δείχνει σχεδόν τριπλάσια δείγματα ελέγχου αντί νοσούντων.}
                 \label{fig:ppmi-visual-bar-class-imb}
             \end{figure}
+            \par
+                
     \section{Ανάλυση εμπλουτισμού}
         \par 
             Μέσω της ανάλυσης εμπλουτισμού (\emph{GSEA}) παρέχεται η διασταύρωση ενός συνόλου γονιδίων, όπως αυτά που αναδείχθηκαν ως διαφορικά εκφραζόμενα και στατιστικά σημαντικά στην προηγούμενη ενότητα, με δεδομένα σχολιασμού από βάσεις δεδομένων βιολογικών μονοπατιών, κυτταρικών λειτουργιών, φαινοτύπων κ.ά.
@@ -646,7 +710,7 @@
             \par
             \subsubsection{Γυναίκες}
                 \par
-                    Στους όρους εμπλουτισμού βιολογικών διεργασιών, όπως απεικονίζονται στην εικόνα~\ref{fig:gsea_results_Female_30-50_GO_Biological_Process_2023_heatmap} παρατηρούνται κυρίως σχέσεις με μονοπάτια και αποκρίσεις του ανοσοποιητικού σε ιούς, συγκεκριμένα από τις οντολογίες GO:0045071, GO:0048525, GO:0045069 όπου αποδίδεται το υψηλότερο σκόρ σύμφωνα με τις τιμές $padj$.
+                    Στους όρους εμπλουτισμού βιολογικών διεργασιών, όπως απεικονίζονται στην εικόνα~\ref{fig:gsea_results_Female_30-50_GO_Biological_Process_2023_heatmap} παρατηρούνται κυρίως σχέσεις με μονοπάτια και αποκρίσεις του ανοσοποιητικού σε ιούς, συγκεκριμένα από τις οντολογίες GO:0045071, GO:0048525, GO:0045069 όπου αποδίδεται το υψηλότερο σκορ σύμφωνα με τις τιμές $padj$.
                 \begin{figure}[H]
                     \centering
                     \includegraphics[width=0.8\textwidth]{GSEA/Females/30-50/gsea_results_Female_30-50_GO_Biological_Process_2023_heatmap.png}
@@ -655,7 +719,7 @@
                 \end{figure}
             \subsubsection{Ανδρες}
                 \par
-                    Οι όροι εμπλουτισμού που επιστράφηκαν από την ανάλυση εμπλουτισμού είναι μερικώς όμοιοι με αυτούς των γυναικών καθώς και γενικότερα τα αποτελέσματα για τους άνδρες σχετίζονται επίσης με την βιολογία του ανοσοποιητικού.
+                    Οι όροι εμπλουτισμού που επιστράφηκαν από την ανάλυση εμπλουτισμού είναι μερικώς όμοιοι με αυτούς των γυναικών καθώς και γενικότερα τα αποτελέσματα για τους άνδρες σχετίζονται επίσης με τη βιολογία του ανοσοποιητικού.
                 \begin{figure}[H]
                     \centering
                     \includegraphics[width=0.8\textwidth]{GSEA/Males/30-50/gsea_results_Male_30-50_GO_Biological_Process_2023_heatmap.png}
