@@ -854,7 +854,7 @@
                     \vspace{-0.5cm}
                     \caption{Αποτελέσματα κατηγοριοποίησης ανά φύλο}
                     \label{fig:predictions-genders-50-70-all-classifiers}
-                \end{figure}                
+                \end{figure}
     \newpage
         \subsection{Αποτίμηση των αποτελεσμάτων της κατηγοριοποίησης}
             Μετά την εκτέλεση της κατηγοριοποίησης προκύπτει το ερώτημα ποια χαρακτηριστικά θεώρησαν τα μοντέλα ταξινόμησης ως παράγοντες διαφοροποίησης μεταξύ των δύο κλάσεων, των υγιών και των νοσούντων ή αλλιώς, ποια είναι τα χαρακτηριστικά που συνέβαλαν περισσότερο ή και λιγότερο, για τη διάκριση των νοσούντων και αντίστοιχα των υγιών.
@@ -862,32 +862,84 @@
             Η ερώτηση μπορεί να απαντηθεί μέσω της εξαγωγής συγκεκριμένων τιμών από τα μοντέλα κατηγοριοποίησης, τα λεγόμενα feature importances που αποδίδουν τιμές σημαντικότητας στα χαρακτηριστικά με βάση των οποίων έγινε η ταξινόμηση. Κάθε μοντέλο κατηγοριοποίησης περιλαμβάνει τρόπους εξαγωγής χαρακτηριστικών, στα οποία αποδίδει και αντίστοιχα σκορ, σύμφωνα με το ρόλο που διαδραμάτισαν στην ταξινόμηση. Τα σκορ που αποδίδονται μπορεί να διαφέρουν αρκετά μεταξύ κατηγοριοποιητών και σε περίπτωση όπου στόχος είναι η σύγκριση των χαρακτηριστικών μεταξύ διάφορων μοντέλων ταξινόμησης, τότε τα σκορ σημαντικότητας πρέπει να κανονικοποιηθούν ώστε να είναι συγκρίσιμα. Επίσης, ο τρόπος με τον οποίο υπολογίζονται τα σημαντικά χαρακτηριστικά της ταξινόμησης μπορεί να διαφέρει από μοντέλο σε μοντέλο και να υπάρχει και μια κλίση σε κατεύθυνση συγκεκριμένων χαρακτηριστικών, η οποία υπόκειται στην αλγοριθμική υλοποίηση, όπως στην περίπτωση του κατηγοριοποιητή Random Forest (\emph{\cite{Strobl2007BiasSolution}}).
         \par
             Η αξιολόγηση της κατηγοριοποίησης μπορεί να επιτευχθεί με ενιαίο και κατανοητό τρόπο με τη χρήση των SHAP\nomenclature{SHAP}{SHapley Additive exPlanation} Values. Πρόκειται για μια μέθοδο η οποία λειτουργεί για κάθε μοντέλο ταξινόμησης με την οποία αποδίδονται σκορ για κάθε χαρακτηριστικό, εξηγώντας πώς αυτό συνέβαλε στην κατηγοριοποίηση. Συγκεκριμένα αποδίδουν το σκορ για το πόσο πολύ ή πόσο λίγο ένα χαρακτηριστικό συνέβαλε στο διαχωρισμό των κλάσεων. Η μέθοδος αυτή χρησιμοποιείται ευρέως σε επιστημονικές έρευνες βιοπληροφορικής όπως \cite{Meral2025Fine-TunedAnalysis} και \cite{FilaliRazzouki2025ExplainingDisease} με στόχο την απάντηση ερωτημάτων σχετικά με τη λήψη αποφάσεων ενός κατηγοριοποιητή και δυνητικά στην ανεύρεση βιοδεικτών, ως πιθανή επέκταση της χρήσης και ερμηνείας αποτελεσμάτων.
-            \newpage
-            % \begin{figure}[ht]
-            %     \centering
-            %     \includegraphics[width=0.5\linewidth]{ML/Predict/DEG/SHAP/LR/shap_beeswarm_plot_Male_50-70_useSMOTE_False.png}
-            %     \caption{Caption}
-            %     \label{fig:enter-label}
-            % \end{figure}
-            \begin{figure}[h]
+        \par
+            Στην εικόνα~\ref{fig:beeswarm-shap-50-70-lr-classifier} παρουσιάζεται σε διάγραμμα σκέδασης, γνωστό με την ονομασία beeswarm plot (\emph{διάγραμμα σμήνους}), η αξιολόγηση των χαρακτηριστικών κατά τη μέθοδο SHAP για το μοντέλο ταξινόμησης της λογιστικής παλινδρόμησης για τα δύο φύλα. Στον άξονα $x$ αναγράφεται το αντίκτυπο του κάθε χαρακτηριστικού (\emph{άξονας $y$}) στην πρόβλεψη. Η τελείες εκπροσωπούν τιμές χαρακτηριστικών, δηλαδή τιμές γονιδιακής έκφρασης. Τελείες σε κοντινές αποστάσεις παραπέμπουν σε παρόμοια μοτίβα έκφρασης και αντίθετα, μεγαλύτερες αποστάσεις σε διαφοροποιημένα μοτίβα έκφρασης. Ο χρωματισμός σε μπλε παραπέμπει σε χαμηλές τιμές έκφρασης και αντίστοιχα, υψηλές τιμές έκφρασης αναπαρίστανται με κόκκινο χρώμα. Η έκταση σε αρνητική κατεύθυνση του άξονα $x$ σημαίνει πως το αντίστοιχο χαρακτηριστικό συνέβαλε αρνητικά στην ταξινόμηση. Δηλαδή, οι τιμές του χαρακτηριστικού, ανάλογα με τα επίπεδα έκφρασης που παρουσιάζει, συνέβαλαν στην απόφαση να χαρακτηριστεί αντίστοιχο δείγμα ως αρνητικό. Εκτάσεις σε θετική κατεύθυνση του άξονα $x$ εννοούν το ακριβώς αντίθετο, δηλαδή είτε με χαμηλή τιμή (\emph{μπλε}) ή υψηλή τιμή έκφρασης, το αντίστοιχο χαρακτηριστικό συνέβαλε θετικά ως προς το να ληφθεί θετική απόφαση κατηγοριοποίησης. Από την εικόνα~\ref{fig:shap_beeswarm_LR_plot_Female_50-70_useSMOTE_False} μπορεί να ερμηνευθεί ότι χαμηλές τιμές έκφρασης του γονιδίου IFIT1 οδηγούν σε αρνητική ταξινόμηση, ενώ υψηλές σε θετική. Παρακάτω, ψηλές τιμές έκφρασης του γονιδίου LGALS2 οδηγούν σε αρνητικές προβλέψεις και αντίθετα χαμηλές σε θετικές.
+            \begin{figure}[H]
                 \centering
                 \begin{subfigure}[b]{0.45\textwidth}
                     \centering
-                    \includegraphics[width=\textwidth]{ML/Predict/DEG/SHAP/LR/shap_beeswarm_plot_Female_50-70_useSMOTE_False.png}
-                    \caption{Γυναίκες}
-                    \label{fig:shap_beeswarm_plot_Female_50-70_useSMOTE_False}
+                    \includegraphics[height=11cm,width=\textwidth,keepaspectratio]{ML/Predict/DEG/SHAP/LR/shap_beeswarm_plot_Female_50-70_useSMOTE_False.png}
+                    \caption{Γυναίκες 50-70 ετών}
+                    \label{fig:shap_beeswarm_LR_plot_Female_50-70_useSMOTE_False}
                 \end{subfigure}
                 \hfill
                 \begin{subfigure}[b]{0.45\textwidth}
                     \centering
-                    \includegraphics[width=\textwidth]{ML/Predict/DEG/SHAP/LR/shap_beeswarm_plot_Male_50-70_useSMOTE_False.png}
-                    \caption{Άνδρες}
-                    \label{fig:shap_beeswarm_plot_Male_50-70_useSMOTE_False}
+                    \includegraphics[height=11cm,width=\textwidth,keepaspectratio]{ML/Predict/DEG/SHAP/LR/shap_beeswarm_plot_Male_50-70_useSMOTE_False.png}
+                    \caption{Άνδρες 50-70 ετών}
+                    \label{fig:shap_beeswarm_LR_plot_Male_50-70_useSMOTE_False}
                 \end{subfigure}
                 \caption{Ανάλυση SHAP για μοντέλο Λογιστικής Παλινδρόμησης}
-                \label{fig:beeswarm-shap-50-70-all-classifiers}
+                \label{fig:beeswarm-shap-50-70-lr-classifier}
             \end{figure}
 
+            
+            \begin{figure}[H]
+                \centering
+                \begin{subfigure}[b]{0.45\textwidth}
+                    \centering
+                    \includegraphics[height=11cm,width=\textwidth,keepaspectratio]{ML/Predict/DEG/SHAP/SVM/shap_beeswarm_plot_Female_50-70_useSMOTE_False.png}
+                    \caption{Γυναίκες 50-70 ετών}
+                    \label{fig:shap_beeswarm_SVM_plot_Female_50-70_useSMOTE_False}
+                \end{subfigure}
+                \hfill
+                \begin{subfigure}[b]{0.45\textwidth}
+                    \centering
+                    \includegraphics[height=11cm,width=\textwidth,keepaspectratio]{ML/Predict/DEG/SHAP/SVM/shap_beeswarm_plot_Male_50-70_useSMOTE_False.png}
+                    \caption{Άνδρες 50-70 ετών}
+                    \label{fig:shap_beeswarm_SVM_plot_Male_50-70_useSMOTE_False}
+                \end{subfigure}
+                \caption{Ανάλυση SHAP για μοντέλο SVM}
+                \label{fig:beeswarm-shap-50-70-svm-classifier}
+            \end{figure}
+
+            \begin{figure}[H]
+                \centering
+                \begin{subfigure}[b]{0.45\textwidth}
+                    \centering
+                    \includegraphics[height=11cm,width=\textwidth,keepaspectratio]{ML/Predict/DEG/SHAP/RF/shap_beeswarm_plot_Female_50-70_useSMOTE_False.png}
+                    \caption{Γυναίκες 50-70 ετών}
+                    \label{fig:shap_beeswarm_RF_plot_Female_50-70_useSMOTE_False}
+                \end{subfigure}
+                \hfill
+                \begin{subfigure}[b]{0.45\textwidth}
+                    \centering
+                    \includegraphics[height=11cm,width=\textwidth,keepaspectratio]{ML/Predict/DEG/SHAP/RF/shap_beeswarm_plot_Male_50-70_useSMOTE_False.png}
+                    \caption{Άνδρες 50-70 ετών}
+                    \label{fig:shap_beeswarm_RF_plot_Male_50-70_useSMOTE_False}
+                \end{subfigure}
+                \caption{Ανάλυση SHAP για μοντέλο Random Forest}
+                \label{fig:beeswarm-shap-50-70-rf-classifier}
+            \end{figure}             
+
+            \begin{figure}[H]
+                \centering
+                \begin{subfigure}[b]{0.45\textwidth}
+                    \centering
+                    \includegraphics[height=11cm,width=\textwidth,keepaspectratio]{ML/Predict/DEG/SHAP/XGBoost/shap_beeswarm_plot_Female_50-70_useSMOTE_False.png}
+                    \caption{Γυναίκες 50-70 ετών}
+                    \label{fig:shap_beeswarm_XGB_plot_Female_50-70_useSMOTE_False}
+                \end{subfigure}
+                \hfill
+                \begin{subfigure}[b]{0.45\textwidth}
+                    \centering
+                    \includegraphics[height=11cm,width=\textwidth,keepaspectratio]{ML/Predict/DEG/SHAP/XGBoost/shap_beeswarm_plot_Male_50-70_useSMOTE_False.png}
+                    \caption{Άνδρες 50-70 ετών}
+                    \label{fig:shap_beeswarm_XGB_plot_Male_50-70_useSMOTE_False}
+                \end{subfigure}
+                \caption{Ανάλυση SHAP για μοντέλο Random Forest}
+                \label{fig:beeswarm-shap-50-70-xgb-classifier}
+            \end{figure}      
 
     \cleardoublepage
     \appendix
