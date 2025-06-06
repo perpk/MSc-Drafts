@@ -11,6 +11,7 @@
 \usepackage{subcaption}
 \usepackage[export]{adjustbox}
 \usepackage{wrapfig}
+\usepackage[locale=DE]{siunitx}
 \usepackage[a4paper, 
     top=3cm, 
     bottom=2.54cm, 
@@ -33,6 +34,8 @@
 \usepackage{setspace}
 \usepackage{tablefootnote}
 \usepackage{csquotes}
+\usepackage{longtable}
+\usepackage{array}
 \usepackage{fancyhdr}
 \usepackage{etoolbox}
 \usepackage{tocloft}
@@ -657,7 +660,7 @@
                     \end{figure}
                 \newpage
                 \par    
-                    Με μια σύντομη αναζήτηση στη βάση Gene4PD\footnote{http://genemed.tech/gene4pd}(\emph{\cite{Li2021Gene4PD:Disease}}), μιας βάσης δεδομένων στο διαδίκτυο για την αναζήτηση γενετικών πληροφοριών σχετικά με τη νόσο του Πάρκινσον, ανέκυψαν αποτελέσματα τα οποία συνοψίζονται στον πίνακα~\ref{tab:gene4pd-known-genes}. Υπάρχει μια μίξη μεταξύ γονιδίων που συμμετέχουν σε νευροβιολογικές διεργασίες αλλά και σε διεργασίες σχετικές με το ανοσοποιητικό σύστημα. 
+                    Με μια σύντομη αναζήτηση των, μεταξύ των δύο φύλων κοινών, γονιδίων στη βάση Gene4PD(\emph{\cite{Li2021Gene4PD:Disease}}), μιας βάσης δεδομένων στο διαδίκτυο για την αναζήτηση γενετικών πληροφοριών σχετικά με τη νόσο του Πάρκινσον, ανέκυψαν αποτελέσματα τα οποία συνοψίζονται στον πίνακα~\ref{tab:gene4pd-known-genes}. Υπάρχει μια μίξη μεταξύ γονιδίων που συμμετέχουν σε νευροβιολογικές διεργασίες αλλά και σε διεργασίες σχετικές με το ανοσοποιητικό σύστημα. 
                     \begin{table}[ht]
                         \centering
                         \scriptsize
@@ -927,7 +930,7 @@
             \end{figure}             
         \par
             Για τον κατηγοριοποιητή XGBoost σημαντικό ρόλο διαδραμάτισε η έκφραση του γονιδίου LGAL2 ενώ το κοινό στους κατηγοριοποιητές της λογιστικής παλινδρόμησης, SVM και Random Forest γονίδιο LRRC37A17P δεν βρίσκεται εντός των πρώτων τριών θέσεων. Αντί αυτού, παρουσιάζονται τα γονίδια ENSG00000239265, C4BPA, GPRC5D-AS1 ως σημαντικότερα, τα οποία στους άλλους κατηγοριοποιητές αποδόθηκε χαμηλότερη σημασία. Τα σημαντικά γονίδια στην ομάδα των ανδρών παρουσιάζουν ομοιότητα στον κατηγοριοποιητή XGBoost (\emph{\ref{fig:shap_beeswarm_XGB_plot_Male_50-70_useSMOTE_False}}) για την αντίστοιχη ομάδα του κατηγοριοποιητή Random Forest (\emph{\ref{fig:shap_beeswarm_RF_plot_Male_50-70_useSMOTE_False}}). Συγκεκριμένα, στις ανώτερες θέσεις βρίσκονται και στους δύο κατηγοριοποιητές τα γονίδια ENSG00000281741, BTNL3 και STK19B.
-            \begin{figure}[H]
+            \begin{figure}[ht]
                 \centering
                 \begin{subfigure}[b]{0.45\textwidth}
                     \centering
@@ -949,39 +952,273 @@
             Η εφαρμογή της μεθόδου SHAP στα μοντέλα κατηγοριοποίησης ανά φύλο της ηλικιακής ομάδας 50-70 ετών έδειξε συνοχή ως προς τα γονίδια που συντέλεσαν στην ταξινόμηση και διάκριση μεταξύ δειγμάτων των ομάδων ελέγχου και νοσούντων. Εκτός από την απόδοση παρόμοιων σκορ, διακρίθηκε και η συνοχή στα αντίστοιχα μοτίβα έκφρασης.
 
     \section{Χαρτογράφηση λειτουργικών δικτύων και ανάλυση εμπλουτισμού}
-            Στα πλαίσια της εργασίας διενεργήθηκε η χαρτογράφηση λειτουργικών δικτύων με τη χρήση του λογισμικού Cytoscape (\emph{\cite{Shannon2003Cytoscape:Networks}}) και η ανάλυση εμπλουτισμού, με τη χρήση του API \nomenclature{API}{Application Programming Interface} της βάσης Enrichr (\emph{\cite{Chen2013Enrichr:Tool}}) μέσω της βιβλιοθήκης Python GSEApy (\emph{\cite{Fang2023GSEApy:Python}}). Επίσης, χρησιμοποιήθηκε η βάση δεδομένων Gene4PD (\emph{\cite{Li2021Gene4PD:Disease}}) όπου υπάρχουν εμπλουτισμένες καταχωρημένες συσχετίσεις γονιδίων με τη νόσο του Πάρκινσον από διαδεδομένες βάσεις σχολιασμού. Ο στόχος είναι η αποτίμηση του συνόλου των αποτελεσμάτων, από τα επιμέρους αναλυτικά στάδια που πραγματοποιήθηκαν σε αυτήν την εργασία. Η χαρτογράφηση γονιδιακών δικτύων και η ανάλυση εμπλουτισμού έγιναν με βάση τα διαφορικά εκφραζόμενα γονίδια που προέκυψαν ανά φύλο και ηλικιακή ομάδα.
+            Στα πλαίσια της εργασίας διενεργήθηκε η χαρτογράφηση λειτουργικών δικτύων με τη χρήση του λογισμικού Cytoscape (\emph{\cite{Shannon2003Cytoscape:Networks}}) καθώς και ο εμπλουτισμός των αλληλεπιδράσεων και βιβλιογραφίας μέσω της βάσης STRING (\emph{\cite{Szklarczyk2023TheInterest}}) \nomenclature{STRING}{Search Tool for the Retrieval of Interacting Genes/Proteins} και η ανάλυση εμπλουτισμού, με τη χρήση του API \nomenclature{API}{Application Programming Interface} της βάσης Enrichr (\emph{\cite{Chen2013Enrichr:Tool}}) μέσω της βιβλιοθήκης Python GSEApy (\emph{\cite{Fang2023GSEApy:Python}}). Επίσης, χρησιμοποιήθηκε η βάση δεδομένων Gene4PD (\emph{\cite{Li2021Gene4PD:Disease}}) όπου υπάρχουν εμπλουτισμένες καταχωρισμένες συσχετίσεις γονιδίων με τη νόσο του Πάρκινσον από διαδεδομένες βάσεις σχολιασμού. Ο στόχος είναι η αποτίμηση του συνόλου των αποτελεσμάτων, από τα επιμέρους αναλυτικά στάδια που πραγματοποιήθηκαν σε αυτήν την εργασία. Η χαρτογράφηση γονιδιακών δικτύων και η ανάλυση εμπλουτισμού έγιναν με βάση τα διαφορικά εκφραζόμενα γονίδια που προέκυψαν ανά φύλο και ηλικιακή ομάδα.
         \par
-        \begin{figure}[ht]
+        \subsection{Αποτελέσματα γυναικών - Ηλικίες 50-70 έτη}
+            Στον πίνακα~\ref{tab:cyto-enrichment-females-50-70} παρατίθενται τα αποτελέσματα εμπλουτισμού μετά από κατασκευή δικτύου με βάση διαφορικά εκφραζόμενα γονίδια γυναικών, της ηλικιακής ομάδας 50-70 ετών. Έντονη είναι η παρουσία των γονιδίων IFITM3, SIGLEC1, MYOM2 τα οποία απαντώνται και στα αποτελέσματα της εφαρμογής της μεθόδου SHAP (\emph{εικόνες \ref{fig:shap_beeswarm_LR_plot_Female_50-70_useSMOTE_False}, \ref{fig:shap_beeswarm_SVM_plot_Female_50-70_useSMOTE_False}, \ref{fig:shap_beeswarm_RF_plot_Female_50-70_useSMOTE_False}, \ref{fig:shap_beeswarm_XGB_plot_Female_50-70_useSMOTE_False}}).
+        \begin{table}[H]
             \centering
-            \begin{minipage}[t]{0.35\textwidth} % Image on the left (35% width)
-                \vspace{0pt} % Aligns top with table
-                \includegraphics[width=\linewidth,height=5cm,keepaspectratio]{Cytoscape/cyto_females_50_70.png}
-                \caption*{Your image description} % Optional image caption
-            \end{minipage}
-            \hfill
-            \begin{minipage}[t]{0.62\textwidth} % Table on the right (62% width)
-                \scriptsize % Small table font
-                \setlength{\tabcolsep}{4pt} % Tight column spacing
-                \renewcommand{\arraystretch}{1.1} % Slightly increased row spacing
-                \begin{tabular}{@{}>{\raggedright}p{2.2cm}>{\raggedright}p{2.5cm}>{\raggedright}p{2.2cm}c@{}}
+            \scriptsize % Small font size (8pt)
+            \setlength{\tabcolsep}{4pt} % Tight column spacing
+            \renewcommand{\arraystretch}{1.1} % Slightly increased row spacing
+            \begin{tabular}{@{}>{\raggedright}p{3cm}>{\raggedright}p{6cm}cS[table-format=1.2E-2]@{}}
+                \toprule
+                \textbf{Source} & \textbf{Term Name} & \textbf{Intersecting Genes} & \textbf{P-value} \\
+                \midrule
+                WikiPathways & Network map of SARS CoV 2 signaling & IFITM3, SIGLEC1, MYOM2 & 1.6E-3 \\
+                Gene Ontology (BP) & biological process involved in interaction with host & IFITM3, 9606, ENSP00000371471, SIGLEC1 & 6.6E-3 \\
+                Transfac predictions & Factor: IRF-1; motif: INRAAANNGAAASN; match class: 1 & SIGLEC1, MYOM2 & 8.2E-3 \\
+                mirTarBase & hsa-miR-146a-5p & IFITM3, SIGLEC1, MYOM2 & 1.06E-2 \\
+                Gene Ontology (BP) & biological process involved in symbiotic interaction & IFITM3, l9606.ENSP00000371471, SIGLEC1 & 2.41E-2 \\
+                Gene Ontology (BP) & defense response to virus & IFITM3, SIGLEC1, MYOM2 & 2.41E-2 \\
+                Reactome & Interferon alpha/beta signaling & IFITM3, SIGLEC1 & 2.60E-2 \\
+                Gene Ontology (BP) & viral life cycle & IFITM3, 9606.ENSP00000371471, SIGLEC1 & 2.61E-2 \\
+                Transfac predictions & Factor: IRF-4; motif: KRAAANGAAAANYN; match class: 1 & SIGLEC1, MYOM2 & 3.91E-2 \\
+                \bottomrule
+            \end{tabular}
+            \caption{Αποτελέσματα εμπλουτισμού κατά τη χαρτογράφηση γονιδιακών δικτύων γυναικών 50-70 ετών}
+            \label{tab:cyto-enrichment-females-50-70}
+        \end{table}
+        \newpage
+            Η εικόνα~\ref{fig:cyto_females_50_70} παρουσιάζει το γονιδιακό δίκτυο, όπως αυτό προέκυψε μετά την ανάλυση μέσω Cytoscape, όπου χαρακτηριστική είναι η παρουσία ιντερφερόνων, η έκφραση των οποίων συμβαδίζει με μια απόκριση του ανοσοποιητικού συστήματος σε φλεγμονή ή και σε κυτταρική βλάβη (\emph{\cite{Kopitar-Jerala2017TheActivation}}). Στα αποτελέσματα βιβλιογραφικού εμπλουτισμού μέσω STRING διακρίθηκαν αποτελέσματα για το υποδίκτυο των γονιδίων RSAD2, IFIT1, SIGLEC1, IFI44L, σχετικά με την κινάση Janus (\emph{\cite{Yamaoka2004TheJaks}}), η οποία συμμετέχει στο μονοπάτι Jak/Stat, με το οποίο βρέθηκε συσχετισμός με έκφραση γονιδίου ιντερφερόνης IF27, που αναφέρθηκε στον πίνακα~\ref{tab:gene4pd-known-genes}. Ο συσχετισμός με τη νόσο του Πάρκινσον περιγράφεται από τους \cite{Lashgari2021TheDisease} ως πιθανός θεραπευτικός στόχος. Ταυτόχρονα το ίδιο υποδίκτυο σχετίζεται με αναφορά σε νευροεκφυλισμό, σύμφωνα με δημοσίευση των \cite{Cooray2023NeuroinflammationIRAK4}.
+            \begin{figure}[h]
+                \centering
+                \includegraphics[width=0.7\textwidth]{Cytoscape/cyto_females_50_70.png}
+                \caption{Λειτουργικό δίκτυο διαφορικά εκφραζόμενων γονιδίων σε γυναίκες 50-70 ετών}
+                \label{fig:cyto_females_50_70}
+            \end{figure}
+            \begin{table}[H]
+                \centering
+                \scriptsize
+                \setlength{\tabcolsep}{4pt}
+                \renewcommand{\arraystretch}{1.1}
+                \begin{tabular}{@{}>{\raggedright}p{10cm}S[table-format=1.2E-2]c@{}}
                     \toprule
-                    \textbf{Source} & \textbf{Term Name} & \textbf{Intersecting Genes} & \textbf{P-value} \\
+                    \textbf{Description} & \textbf{FDR} & \textbf{PMID} \\
                     \midrule
-                    WikiPathways & SARS CoV 2 signaling & IFITM3, SIGLEC1, MYOM2 & 0,0016 \\
-                    Gene Ontology (BP) & host interaction process & IFITM3, ENSP00000371471, SIGLEC1 & 0,0066 \\
-                    Transfac & IRF-1 motif & SIGLEC1, MYOM2 & 0,0082 \\
-                    mirTarBase & hsa-miR-146a-5p & IFITM3, SIGLEC1, MYOM2 & 0,0106 \\
-                    Gene Ontology (BP) & symbiotic interaction & IFITM3, SIGLEC1 & 0,0241 \\
-                    Gene Ontology (BP) & virus defense & IFITM3, SIGLEC1, MYOM2 & 0,0241 \\
-                    Reactome & Interferon signaling & IFITM3, SIGLEC1 & 0,0260 \\
+                     Janus Kinase Inhibitors in the Treatment of Type I Interferonopathies: A Case Series From a Single Center in China. & 1.75E-5 & PMID:35418997 \\
+                      JAK inhibitors: a potential treatment for JDM in the context of the role of interferon-driven pathology. & 7.98E-5 & PMID:34563217 \\
+                      Neuroinflammation, autoinflammation, splenomegaly and anemia caused by bi-allelic mutations in IRAK4. & 1.2E-4 & PMID:37744344 \\
                     \bottomrule
                 \end{tabular}
-                \caption{Pathway analysis results (abbreviated for space)}
-                \label{tab:pathways}
-            \end{minipage}
-        \end{figure}
-                
-               
+                \caption{Επιλογή βιβλιογραφικών αναφορών κατά τη χαρτογράφηση γονιδιακών δικτύων γυναικών 50-70 ετών}
+                \label{tab:cyto-pub-enrichment-females-50-70}
+            \end{table}
+            \newpage
+                Τα αποτελέσματα εμπλουτισμού μέσω Enrichr δεν αποκλίνουν από τα παραπάνω, καθώς και σε αυτή την περίπτωση οι σχολιασμοί με υψηλό σκορ στατιστικής σημαντικότητας συγκεντρώνονται γύρω από τη μεταγραφή ιντερφερονών και γενικότερα αφορούν σε λειτουργίες του ανοσοποιητικού. Επιπλέον των βάσεων σχολιασμού οντολογιών και μονοπατιών, συμπεριλήφθηκαν και πηγές δεδομένων από μεταγραφικούς παράγοντες, όπου και πάλι τα αποτελέσματα σχετίζονται ή παραπέμπουν σε αποκρίσεις φλεγμονής (\emph{Πίνακας~\ref{tab:gseapy-enrichment-females-50-70}}). 
+            \par
+                Χαρακτηριστικό είναι το αποτέλεσμα του μεταγραφικού παράγοντα HESX1\footnote{http://genemed.tech/gene4pd/geneDetail/main?gene\_symbol=HESX1}, για το οποίο βρέθηκαν αντιστοιχήσεις στην βάση Gene4PD με φαινότυπους από την οντολογία HPO \nomenclature{HPO}{Human Phenotype Ontology}(\emph{\cite{Gargano2024TheWorld}}) που αφορούν σε κινητικά προβλήματα, τρόμους, υποσμία και ανοσμία (\emph{\cite{Mitchell2025HyposmiaLoss.}, \cite{Tarakad2017AnosmiaDisease}}), παθολογικά επίπεδα προλακτίνης (που σύμφωνα με \emph{\cite{Al-kuraishy2023TheWays} δεν υφίσταται ακριβή και εξακριβωμένη συσχέτιση}) και κατ' επέκταση σχετικούς με τη νόσο του Πάρκινσον (\emph{Πίνακας~\ref{tab:hpo-terms-females-50-70}}).
+            \begin{table}[H]
+                \centering
+                \scriptsize
+                \setlength{\tabcolsep}{4pt}
+                \renewcommand{\arraystretch}{1.1}
+                \begin{tabular}{@{}
+                    >{\raggedright}p{4.5cm}
+                    >{\raggedright}p{3cm}S[table-format=1.2E-2]
+                    >{\raggedright\arraybackslash}p{2.5cm}
+                    @{}
+                }
+                    \toprule
+                    \textbf{Gene set} & \textbf{Term} & \textbf{Adjusted P-value} & \textbf{Genes} \\
+                    \midrule
+                    MSigDB\_Hallmark\_2020 & Interferon Gamma Response & 7.0E-4 & IFITM3, RSAD2, BPGM, IFIT1, IFI44L \\
+                    MSigDB\_Hallmark\_2020 & Interferon Alpha Response & 4.3E-3 & IFITM3, RSAD2, IFI44L \\
+                    Enrichr\_Submissions\_TF-Gene\_Coocurrence & \textbf{HESX1} & 5.19E-2 & IFITM3, RSAD2, SIGLEC1, IFIT1, IFI44L \\
+                    \bottomrule
+                \end{tabular}
+                \caption{Ανάλυση εμπλουτισμού μέσω Enrichr - ενδεικτικά αποτελέσματα γυναικών 50-70 ετών}
+                \label{tab:gseapy-enrichment-females-50-70}
+            \end{table}
+
+            \begin{table}[H]
+                \centering
+                \scriptsize
+                \setlength{\tabcolsep}{4pt}
+                \renewcommand{\arraystretch}{1.1}
+                \begin{tabular}{@{}>{\raggedright}p{5cm}c@{}}
+                    \toprule
+                    \textbf{HP ID} & \textbf{Phenotype} \\
+                    \midrule
+                    HP:0001337 & Tremor \\
+                    HP:0001288 & Gait disturbance \\
+                    HP:0004409 & Hyposmia \\
+                    HP:0000458 & Anosmia \\
+                    HP:0040086 & Abnormal prolactin level \\
+                    HP:0008202 & Reduced circulating prolactin concentration \\
+                    \bottomrule
+                \end{tabular}
+                \caption{Σχετικοί με τη νόσο του Πάρκινσον Φαινότυποι σε έδαφος του μεταγραφικού παράγοντα HSX1}
+                \label{tab:hpo-terms-females-50-70}
+            \end{table}
+        \newpage
+        \subsection{Αποτελέσματα ανδρών - Ηλικίες 50-70 έτη}
+            Τα αποτελέσματα της ανάλυσης λειτουργικών δικτύων μέσω Cytoscape για τα διαφορικά εκφραζόμενα γονίδια ανδρών της ηλικιακής ομάδας 50-70 ετών χαρακτηρίζονται από την έντονη παρουσία πρωτεϊνών κερατίνης (\emph{Εικόνα~\ref{fig:cyto_males_keratin_50_70}}). Σύμφωνα με τα ευρήματα της διαφορικής ανάλυσης, το γονίδιο KRT77 βρέθηκε να υπό-εκφράζεται και επίσης συνέβαλε στη διαφοροποίηση μεταξύ παθολογικών και υγιών δειγμάτων στην εφαρμογή ταξινόμησης μηχανικής μάθησης. Έρευνες που έχουν αποτυπωθεί σε δημοσιεύσεις όπως των \cite{Liu2025ImpairedKeratinocytes} και \cite{Wang2022BioinformaticsDisease} αναφέρουν μεταξύ άλλων και το αντίκτυπο σε επίπεδα κερατίνης στη νόσο του Πάρκινσον. Χαρακτηριστική είναι η απουσία οποιουδήποτε στοιχείου απόκρισης ανοσοποιητικού συστήματος ή κάποιου σχολιασμού σχετικά με φλεγμονή, σε αντίθεση με τους όρους εμπλουτισμού που σχημάτιζαν την πλειοψηφία του συνόλου του εμπλουτισμού στις γυναίκες. Από τον εμπλουτισμό βιβλιογραφίας μέσω της βάσης STRING δεν προέκυψαν αποτελέσματα, παρά μόνο για τη λειτουργική ανάλυση εμπλουτισμού.         Στον πίνακα~\ref{tab:cyto-enrichment-males-50-70} παρατίθενται τα αποτελέσματα της λειτουργικής ανάλυσης εμπλουτισμού μέσω STRING. Όλα τα αποτελέσματα αφορούν βιολογικές διεργασίες σχετικές με την κερατίνη. Στις σχετικές διεργασίες συμβάλλουν κατ' επανάληψη γονίδια όπως LCE1A, LC5AA (\emph{οικογένεια πρωτεϊνών Late Cornified Envelope}) και οι σχετικές με την πρωτεΐνη της κερατίνης KRTAP45, KRTAP21, κοκ. 
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width=0.5\textwidth]{Cytoscape/Males/cyto_males_50_70_keratine.png}
+                \caption{Λειτουργικό δίκτυο διαφορικά εκφραζόμενων γονιδίων σε άνδρες 50-70 ετών}
+                \label{fig:cyto_males_keratin_50_70}
+            \end{figure}
+    \begingroup
+    \scriptsize
+    \setlength{\tabcolsep}{6pt} % Increased from 4pt
+    \renewcommand{\arraystretch}{1.1}
+    \begin{longtable}{
+        @{}
+        >{\raggedright}p{3.2cm} % Wider first column
+        >{\raggedright}p{3cm}   % Wider second column
+        S[table-format=1.2E-2]
+        >{\raggedright\arraybackslash}p{6cm} % Widest column
+        @{}
+    }
+        \caption{Αποτελέσματα λειτουργικού εμπλουτισμού - Άνδρες 50-70 ετών}\label{tab:cyto-enrichment-males-50-70}\\
+        \toprule
+        \textbf{Category} & \textbf{Description} & \textbf{FDR value} & \textbf{Genes} \\
+        \midrule
+        \endfirsthead
+
+        \toprule
+        \textbf{Category} & \textbf{Description} & \textbf{FDR value} & \textbf{Genes} \\
+        \midrule
+        \endhead
+
+        \midrule
+        \multicolumn{4}{r@{}}{\footnotesize\itshape Συνέχεια στην επόμενη σελίδα}\\
+        \endfoot
+
+        \bottomrule
+        \endlastfoot
+
+        Reactome Pathways & Keratinization & 1.36E-14 & LCE1A, LC5AA, KRTAP4\-5, SPRR2B, IVL, LCECC, KRTAP1\-4, KRTAP13\-3, KRTAP2\-1, KRTAP2\-2, LC5BA \\ 
+        Pfam & Keratin, high sulfur B2 protein & 8.27E-11 & KRTAP4\-5, KRTAP1\-4, KRTAP4\-4, KRTAP2\-1, KRTAP9\-9, KRTAP4\-12, KRTAP2\-2 \\ 
+        UniProt Keywords & Keratinization & 1.06E-09 & LCE1A, LC5AA, SPRR2B, IVL, LCECC, LC5BA \\ 
+        STRING Clusters & Keratin & 2.32E-09 & KRTAP4\-5, KRTAP1\-4, KRTAP4\-4, KRTAP13\-3, KRTAP2\-1, KRTAP9\-9, KRTAP4\-12 \\ 
+        GO Cellular Component & Keratin filament & 7.04E-09 & KRTAP4\-5, KRTAP1\-4, KRTAP4\-4, KRTAP2\-1, KRTAP9\-9, KRTAP4\-12, KRTAP2\-2 \\ 
+        GO Cellular Component & Intermediate filament & 7.15E-09 & KRTAP4\-5, KRTAP1\-4, KRTAP4\-4, KRTAP13\-3, KRTAP2\-1, KRTAP9\-9, KRTAP4\-12, KRTAP2\-2 \\ 
+        STRING Clusters & Keratinization and Cornified envelope & 1.74E-08 & LCE1A, LC5AA, SPRR2B, IVL, LCECC, LC5BA \\ 
+        STRING Clusters & Keratin, high sulfur B2 protein & 1.95E-09 & KRTAP4\-5, KRTAP4\-4, KRTAP2\-1, KRTAP9\-9, KRTAP4\-12 \\ 
+        STRING Clusters & Keratinization & 3.48E-08 & LCE1A, LC5AA, SPRR2B, LCECC, LC5BA \\ 
+        TISSUES & Scalp & 4.42E-08 & KRTAP4\-5, KRTAP4\-4, KRTAP2\-1, KRTAP9\-9, KRTAP4\-12, KRTAP2\-2 \\ 
+        STRING Clusters & Late cornified envelope & 7.12E-07 & LCE1A, LC5AA, LCECC, LC5BA \\ 
+        STRING Clusters & Keratin, high sulfur B2 protein & 1.01E-08 & KRTAP4\-5, KRTAP4\-4, KRTAP2\-1, KRTAP9\-9 \\ 
+        Reactome Pathways & Formation of the cornified envelope & 1.16E-06 & LCE1A, LC5AA, SPRR2B, IVL, LCECC, LC5BA \\ 
+        GO Biological Process & Keratinization & 1.99E-06 & LCE1A, LC5AA, SPRR2B, IVL, LCECC, LC5BA \\ 
+        STRING Clusters & Late cornified envelope & 9.07E-06 & LCE1A, LCECC, LC5BA \\ 
+        TISSUES & Skin & 1.66E-05 & KRTAP4\-5, APOD, SPRR2B, IVL, KRTAP4\-4, KRTAP2\-1, KRTAP9\-9, KRTAP4\-12, KRTAP2\-2, LC5BA \\ 
+        UniProt Keywords & Keratin & 6.13E-05 & KRTAP4\-5, KRTAP1\-4, KRTAP13\-3, KRTAP2\-1, KRTAP2\-2 \\ 
+        InterPro Domains & Keratin-associated protein & 3.80E-04 & KRTAP4\-5, KRTAP1\-4, KRTAP2\-1, KRTAP2\-2 \\ 
+        Pfam & Late cornified envelope & 9.70E-04 & LCE1A, LC5AA, LCECC \\ 
+        InterPro Domains & Late cornified envelope protein & 3.00E-03 & LCE1A, LC5AA, LCECC \\ 
+        STRING Clusters & Keratin, high sulfur B2 protein & 5.00E-03 & KRTAP4\-5, KRTAP4\-4 \\ 
+        STRING Clusters & Mixed, incl. Keratin, high sulfur B2 protein, and Keratin, high-sulphur matrix protein & 5.00E-03 & KRTAP2\-1, KRTAP9\-9 \\ 
+        GO Cellular Component & Cytoskeleton & 2.38E-02 & KRTAP4\-5, IVL, KRTAP1\-4, KRTAP4\-4, KRTAP13\-3, KRTAP2\-1, KRTAP9\-9, KRTAP4\-12, KRTAP2\-2 \\ 
+        STRING Clusters & Keratin-associated protein, PMG type, and Keratin-associated protein, type6/6/16/19/20/21 & 3.92E-02 & KRTAP1\-4, KRTAP13\-3 \\ 
+    \end{longtable}
+\endgroup
+    Аπό την ανάλυση εμπλουτισμού με τη χρήση Enrichr δεν προέκυψαν στατιστικά σημαντικά αποτελέσματα. Μια επιλογή από τα αποτελέσματα που θα μπορούσαν να θεωρηθούν σχετικά με τη νόσο του Πάρκινσον, λόγω της συνάφειας των εμπλουτισμένων όρων, παρατίθεται στον πίνακα~\ref{tab:enrichr-males-50-70}. 
+    \par
+        Οι τέσσερις πρώτες εγγραφές αναφέρονται σε κυτταρικές συστάσεις και βιολογικές διεργασίες του νευρικού συστήματος. Η σχέση της εγγραφής IL-2/STAT5 Signaling αφορά σε διεργασία του ανοσοποιητικού συστήματος. Η εγγραφή Xenobiotic Metabolism αναφέρεται σε μεταβολισμό ξενοβιοτικών, δηλαδή εξωσωματικά χημικά τα οποία μπορούν να παρέμβουν στον μεταβολισμό και ως συγκεντροτικός όρος μπορεί να περιλαμβάνει χημικές ουσίες όπως παρασιτοκτόνα αλλά και φάρμακα (\emph{\cite{Croom2012MetabolismEnvironments}}). Η σχέση παρασιτοκτόνων και ανάπτυξης της νόσου έχει αναλυθεί και στο παρελθόν από τους \cite{LeCouteur1999PesticidesDisease}. Η σχέση μεταξύ της νόσου του Πάρκινσον και του μεταβολισμού λιπαρών οξέων αναλύεται από τους \cite{Alecu2019DysregulatedDisease}. Διαταραχές του μεταβολισμού της αίμης και σχέσεις με νευροεκφυλιστικές νόσους, λόγω οξειδωτικού στρές περιγράφεται σε δημοσίευση των \cite{Chiabrando2018UnravelingNeurodegeneration}. Ακολοθούν εγγραφές, κυρίως σχετικές με ανοσολογική απόκριση σε μόλυνση από τον ιό SARS CoV2 καθώς και συγκεκριμένα μετά-COVID προκληθείσα νευροφλεγμονή και χρόνιο οξειδωτικό στρές. Ο εμπλουτισμός για το γονίδιο TUBB8 βρίσκει συσχέτιση με μονοπάτι παρκίνης και ουβικουιτίνης, με ρόλο στην αποδόμηση πρωτεϊνών και διαταραχές της οποίας εικάζεται πως σχετίζεται με τη συσσώρευση  συνουκλεϊνης-α λόγω ελλιπής αποδόμησης και στη συνέχεια την εκδήλωση του νευροεκφυλισμού στη νόσο του Πάρκινσον (\emph{\cite{Zhao2024ExploringDisease}}). Η ομοιόσταση χαλκού, που αναφέρεται ως πρώτη των τεσσάρων τελευταίων εγγραφών του πίνακα, αναφέρεται στη βιβλιογραφία σε δημοσίευση των \cite{Gaggelli2006CopperSclerosis} όπου σχετίζεται με νευροεκφυλιστικές παθήσεις και αναλύει βιοχημικές σχέσεις μεταξύ ιόντων χαλκού και συνουκλεϊνης-α. Στις τρείς τελευταίες εγγραφές αναφέρεται και η νόσος Alzheimer και τέλος ο εμπλουτισμός του γονιδίου TUBB8 με τη νόσο του Πάρκινσον.
+    \begin{table}[htbp]
+        \centering
+        \scriptsize
+        \setlength{\tabcolsep}{4pt}
+        \renewcommand{\arraystretch}{1.1}
+        \begin{tabular}{@{}>{\raggedright}p{3.2cm}>{\raggedright}p{8cm}S[table-format=1.2]>{\raggedright\arraybackslash}p{1.5cm}@{}}
+            \toprule
+            \textbf{Gene set} & \textbf{Term} & \textbf{Adj. P-value} & \textbf{Genes} \\ \addlinespace
+            \midrule
+            SynGO\_2024 & Integral Component Of Postsynaptic Density Membrane (GO:0099061) CC & 0.9998 & GRIK3 \\ \addlinespace
+            SynGO\_2024 & Voltage-Gated Ca Channel Activity Involved In Regulation Of Presynaptic Cytosolic Ca Levels (GO:0099626) BP & 0.9998 & CACNB2 \\ \addlinespace
+            SynGO\_2024 & Ligand-Gated IC Activity Involved In Regulation Of Presynaptic Membrane Potential (GO:0099507) BP & 0.9998 & GRIK3 \\ \addlinespace
+            SynGO\_2024 & Integral Component Of Presynaptic Membrane (GO:0099056) CC & 0.9998 & GRIK3 \\ \addlinespace
+            MSigDB\_Hallmark\_2020 & IL-2/STAT5 Signaling & 1.0000 & COCH \\ \addlinespace
+            MSigDB\_Hallmark\_2020 & Xenobiotic Metabolism & 1.0000 & RAP1GAP \\ \addlinespace
+            MSigDB\_Hallmark\_2020 & Fatty Acid Metabolism & 1.0000 & XIST \\ \addlinespace
+            MSigDB\_Hallmark\_2020 & Heme Metabolism & 1.0000 & RAP1GAP \\ \addlinespace
+            WikiPathways\_2024\_Human & Zinc Homeostasis WP3529 & 1.0000 & MT4 \\ \addlinespace
+            WikiPathways\_2024\_Human & Post COVID Neuroinflammation WP5485 & 1.0000 & ACE2 \\ \addlinespace
+            WikiPathways\_2024\_Human & SARS CoV 2 Mt Chronic Ox Stress And Endothelial Dysfunction WP5183 & 1.0000 & ACE2 \\ \addlinespace
+            WikiPathways\_2024\_Human & COVID 19 Structural Coverage Map WP5145 & 1.0000 & ACE2 \\ \addlinespace
+            WikiPathways\_2024\_Human & RAS And Bradykinin Pathways in COVID 19 WP4969 & 1.0000 & ACE2 \\ \addlinespace
+            WikiPathways\_2024\_Human & Antiviral And Anti-Inflam Effects Of Nrf2 On SARS CoV 2 Pathway WP5113 & 1.0000 & ACE2 \\ \addlinespace
+            WikiPathways\_2024\_Human & Type I Interferon Induction And Signaling SARS CoV 2 Infection WP4868 & 1.0000 & ACE2 \\ \addlinespace
+            WikiPathways\_2024\_Human & SARS Coronavirus And Innate Immunity WP4912 & 1.0000 & ACE2 \\ \addlinespace
+            WikiPathways\_2024\_Human & Mitochondrial Immune Response To SARS CoV 2 WP5038 & 1.0000 & ACE2 \\ \addlinespace
+            WikiPathways\_2024\_Human & lncRNA In Canonical Wnt Signaling And Colorectal Cancer WP4258 & 1.0000 & ROR1;WNT3 \\ \addlinespace
+            WikiPathways\_2024\_Human & SARS CoV 2 Innate Immunity Evasion And Cell Immune Response WP5039 & 1.0000 & ACE2 \\ \addlinespace
+            WikiPathways\_2024\_Human & Parkin Ubiquitin Proteasomal System Pathway WP2359 & 1.0000 & TUBB8 \\ \addlinespace
+            WikiPathways\_2024\_Human & Copper Homeostasis WP3286 & 1.0000 & MT4 \\ \addlinespace
+            WikiPathways\_2024\_Human & Alzheimer's Disease WP5124 & 1.0000 & TUBB8;WNT3 \\ \addlinespace
+            WikiPathways\_2024\_Human & Alzheimer's Disease And miRNA Effects WP2059 & 1.0000 & TUBB8;WNT3 \\ \addlinespace
+            KEGG\_2021\_Human & Parkinson disease & 1.0000 & TUBB8 \\ \addlinespace
+            \bottomrule
+        \end{tabular}
+        \caption{Ανάλυση εμπλουτισμού μέσω Enrichr - ενδεικτικά αποτελέσματα ανδρών 50-70 ετών}
+        \label{tab:enrichr-males-50-70}
+    \end{table}    
+    % \begingroup
+    %     \scriptsize
+    %     \setlength{\tabcolsep}{4pt}
+    %     \renewcommand{\arraystretch}{1.1}
+    %     \begin{longtable}{@{}>{\raggedright}p{2.5cm}>{\raggedright}p{4.5cm}S[table-format=1.4]>{\raggedright\arraybackslash}p{2cm}@{}}
+    %         \caption{Ανάλυση εμπλουτισμού μέσω Enrichr - ενδεικτικά αποτελέσματα γυναικών 50-70 ετών}\label{tab:enrichr-results-males-50-70}\\
+    %         \toprule
+    %         \textbf{Gene set} & \textbf{Term} & \textbf{Adj. P-value} & \textbf{Genes} \\
+    %         \midrule
+    %         \endfirsthead
+    
+    %         \toprule
+    %         \textbf{Gene set} & \textbf{Term} & \textbf{Adj. P-value} & \textbf{Genes} \\
+    %         \midrule
+    %         \endhead
+    
+    %         \bottomrule
+    %         \multicolumn{4}{r@{}}{\footnotesize\itshape Continued on next page}\\
+    %         \endfoot
+    
+    %         \bottomrule
+    %         \endlastfoot
+    
+    %         \rowcolor{gray!10}
+    %         \multirow{4}{*}{SynGO\_2024} & Integral Component Of Postsynaptic Density Membrane (GO:0099061) CC & 0.9998 & GRIK3 \\ 
+    %         & Voltage-Gated Ca Channel Activity Involved In Regulation Of Presynaptic Cytosolic Ca Levels (GO:0099626) BP & 0.9998 & CACNB2 \\ 
+    %         & Ligand-Gated IC Activity Involved In Regulation Of Presynaptic Membrane Potential (GO:0099507) BP & 0.9998 & GRIK3 \\ 
+    %         & Integral Component Of Presynaptic Membrane (GO:0099056) CC & 0.9998 & GRIK3 \\ \cline{2-4}
+    
+    %         \rowcolor{gray!10}
+    %         \multirow{4}{*}{MSigDB\_Hallmark\_2020} & IL-2/STAT5 Signaling & 1.0000 & COCH \\ 
+    %         & Xenobiotic Metabolism & 1.0000 & RAP1GAP \\ 
+    %         & Fatty Acid Metabolism & 1.0000 & XIST \\ 
+    %         & Heme Metabolism & 1.0000 & RAP1GAP \\ \cline{2-4}
+    
+    %         \rowcolor{gray!10}
+    %         \multirow{12}{*}{WikiPathways\_2024\_Human} & Zinc Homeostasis WP3529 & 1.0000 & MT4 \\ 
+    %         & Post COVID Neuroinflammation WP5485 & 1.0000 & ACE2 \\ 
+    %         & SARS CoV 2 Mt Chronic Ox Stress And Endothelial Dysfunction WP5183 & 1.0000 & ACE2 \\ 
+    %         & COVID 19 Structural Coverage Map WP5145 & 1.0000 & ACE2 \\ 
+    %         & RAS And Bradykinin Pathways in COVID 19 WP4969 & 1.0000 & ACE2 \\ 
+    %         & Antiviral And Anti-Inflam Effects Of Nrf2 On SARS CoV 2 Pathway WP5113 & 1.0000 & ACE2 \\ 
+    %         & Type I Interferon Induction And Signaling SARS CoV 2 Infection WP4868 & 1.0000 & ACE2 \\ 
+    %         & SARS Coronavirus And Innate Immunity WP4912 & 1.0000 & ACE2 \\ 
+    %         & Mitochondrial Immune Response To SARS CoV 2 WP5038 & 1.0000 & ACE2 \\ 
+    %         & lncRNA In Canonical Wnt Signaling And Colorectal Cancer WP4258 & 1.0000 & ROR1;WNT3 \\ 
+    %         & SARS CoV 2 Innate Immunity Evasion And Cell Immune Response WP5039 & 1.0000 & ACE2 \\ 
+    %         & Parkin Ubiquitin Proteasomal System Pathway WP2359 & 1.0000 & TUBB8 \\ \cline{2-4}
+    
+    %         \rowcolor{gray!10}
+    %         WikiPathways\_2024\_Human & Copper Homeostasis WP3286 & 1.0000 & MT4 \\ 
+    %         & Alzheimer's Disease WP5124 & 1.0000 & TUBB8;WNT3 \\ 
+    %         & Alzheimer's Disease And miRNA Effects WP2059 & 1.0000 & TUBB8;WNT3 \\ \cline{2-4}
+    
+    %         \rowcolor{gray!10}
+    %         KEGG\_2021\_Human & Parkinson disease & 1.0000 & TUBB8 \\ 
+    
+    %     \end{longtable}
+    % \endgroup    
+
+
+
 
     \cleardoublepage
     \appendix
